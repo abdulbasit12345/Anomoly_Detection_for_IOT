@@ -1,0 +1,37 @@
+2026-07-08 07:09:17,435 [INFO] numexpr.utils: NumExpr defaulting to 8 threads.
+2026-07-08 07:09:52,453 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 07:09:52,453 [INFO] RUN_ON_FILE:  Run tag   : 02_15_2018
+2026-07-08 07:09:52,454 [INFO] RUN_ON_FILE:  CSV file  : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 07:09:52,454 [INFO] RUN_ON_FILE:  Results   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018
+2026-07-08 07:09:52,454 [INFO] RUN_ON_FILE:  Device    : cpu | CPU threads: 2
+2026-07-08 07:09:52,454 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 07:09:52,454 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 07:10:05,568 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-07-08 07:10:07,192 [INFO] src.data_processing.preprocessor:    After stratified sampling: (48, 80)
+2026-07-08 07:10:07,204 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet']
+2026-07-08 07:10:07,208 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    47
+1     1
+2026-07-08 07:10:07,255 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-08 07:10:07,258 [ERROR] RUN_ON_FILE:  Pipeline failed: The least populated classes in y have only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2. Classes with too few members are: [1]
+Traceback (most recent call last):
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 422, in <module>
+    main()
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 176, in main
+    data = load_and_preprocess(run_cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/src/data_processing/preprocessor.py", line 80, in load_and_preprocess
+    X_temp, X_test, y_temp, y_test, att_temp, att_test = train_test_split(
+                                                         ^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 2945, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 1928, in split
+    for train, test in self._iter_indices(X, y, groups):
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 2346, in _iter_indices
+    raise ValueError(
+ValueError: The least populated classes in y have only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2. Classes with too few members are: [1]

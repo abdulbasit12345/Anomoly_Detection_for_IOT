@@ -1,0 +1,53 @@
+2026-07-08 09:07:19,475 [INFO] numexpr.utils: NumExpr defaulting to 8 threads.
+2026-07-08 09:07:34,068 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 09:07:34,069 [INFO] RUN_ON_FILE:  Run tag   : 02_15_2018
+2026-07-08 09:07:34,069 [INFO] RUN_ON_FILE:  CSV file  : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 09:07:34,069 [INFO] RUN_ON_FILE:  Results   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018
+2026-07-08 09:07:34,069 [INFO] RUN_ON_FILE:  Device    : cpu | CPU threads: 2
+2026-07-08 09:07:34,069 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 09:07:34,069 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 09:07:41,648 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-07-08 09:07:42,415 [INFO] src.data_processing.preprocessor:    After stratified sampling: (48, 80)
+2026-07-08 09:07:42,421 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet']
+2026-07-08 09:07:42,423 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    47
+1     1
+2026-07-08 09:07:42,441 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-08 09:07:42,445 [INFO] src.data_processing.preprocessor:    Train=33  Val=5  Test=10
+2026-07-08 09:07:42,473 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed_02_15_2018
+2026-07-08 09:07:42,474 [INFO] RUN_ON_FILE:  Training Baseline Tabular MLP...
+2026-07-08 09:07:42,479 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 33  (real=33  synth=0)
+2026-07-08 09:07:42,538 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=1.7811  vl_loss=0.9421  tr_acc=0.1818  vl_acc=1.0000  vl_f1_macro=1.0000
+2026-07-08 09:07:42,573 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/classifier_baseline.pt
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    accuracy                                 0.9000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    recall                                   0.4500
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    f1_score                                 0.4737
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      1
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    false_positive_rate                      0.1000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    Benign_recall                            0.9000
+2026-07-08 09:07:42,594 [INFO] src.evaluation.metrics:    Benign_f1                                0.9474
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 09:07:42,595 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 09:07:42,637 [ERROR] RUN_ON_FILE:  Pipeline failed: index 2 is out of bounds for axis 1 with size 2
+Traceback (most recent call last):
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 422, in <module>
+    main()
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 198, in main
+    baseline_metrics, _, _ = _evaluate_classifier(baseline_model, data, device, run_cfg.MODELS_DIR)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 146, in _evaluate_classifier
+    plot_confusion_matrix(cm, run_cfg.CLASS_NAMES_3CLASS, plots_dir)
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/src/evaluation/visualizer.py", line 111, in plot_confusion_matrix
+    txt_color = TEXT if cm_pct[i, j] < 60 else BG
+                        ~~~~~~^^^^^^
+IndexError: index 2 is out of bounds for axis 1 with size 2

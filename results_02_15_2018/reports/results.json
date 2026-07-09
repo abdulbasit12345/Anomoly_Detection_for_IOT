@@ -1,0 +1,96 @@
+{
+  "optimal_threshold": 0.5,
+  "final_metrics": {
+    "accuracy": 0.1,
+    "balanced_accuracy": 0.1,
+    "precision": 0.5,
+    "recall": 0.05,
+    "f1_score": 0.090909,
+    "n_predicted_anomaly": 9,
+    "n_true_anomaly": 0,
+    "false_positive_rate": 0.9,
+    "Benign_precision": 1.0,
+    "Benign_recall": 0.1,
+    "Benign_f1": 0.181818,
+    "Botnet_precision": 0.0,
+    "Botnet_recall": 0.0,
+    "Botnet_f1": 0.0,
+    "Malware_precision": 0.0,
+    "Malware_recall": 0.0,
+    "Malware_f1": 0.0
+  },
+  "attack_type_breakdown": {
+    "per_attack": [],
+    "total_attacks_in_test": 0,
+    "total_detected": 0,
+    "overall_detection_rate": 0.0,
+    "false_positives": 9,
+    "n_benign_in_test": 10,
+    "false_positive_rate": 0.9
+  },
+  "model_comparison": [
+    {
+      "Model": "Tabular Baseline (MLP)",
+      "Accuracy": "0.9000",
+      "Balanced Accuracy": "0.9000",
+      "Precision": "0.5000",
+      "Recall": "0.4500",
+      "F1 Score": "0.4737",
+      "Roc Auc": "0.0000"
+    },
+    {
+      "Model": "Tabular Simple GAN + MLP",
+      "Accuracy": "0.9000",
+      "Balanced Accuracy": "0.9000",
+      "Precision": "0.5000",
+      "Recall": "0.4500",
+      "F1 Score": "0.4737",
+      "Roc Auc": "0.0000"
+    },
+    {
+      "Model": "Tabular CTGAN + MLP",
+      "Accuracy": "0.1000",
+      "Balanced Accuracy": "0.1000",
+      "Precision": "0.5000",
+      "Recall": "0.0500",
+      "F1 Score": "0.0909",
+      "Roc Auc": "0.0000"
+    },
+    {
+      "Model": "Hybrid Baseline",
+      "Accuracy": "0.1000",
+      "Balanced Accuracy": "0.1000",
+      "Precision": "0.5000",
+      "Recall": "0.0500",
+      "F1 Score": "0.0909",
+      "Roc Auc": "0.0000"
+    },
+    {
+      "Model": "Hybrid Simple GAN + DistilBERT",
+      "Accuracy": "0.1000",
+      "Balanced Accuracy": "0.1000",
+      "Precision": "0.5000",
+      "Recall": "0.0500",
+      "F1 Score": "0.0909",
+      "Roc Auc": "0.0000"
+    },
+    {
+      "Model": "Hybrid CTGAN + DistilBERT",
+      "Accuracy": "0.0000",
+      "Balanced Accuracy": "0.0000",
+      "Precision": "0.0000",
+      "Recall": "0.0000",
+      "F1 Score": "0.0000",
+      "Roc Auc": "0.0000"
+    }
+  ],
+  "bert_explanations": [
+    {
+      "sample_idx": 0,
+      "prediction": "Malware",
+      "confidence": "34.5%",
+      "attack_type": "Benign",
+      "explanation": "[PREDICTION]: MALWARE (Attack) | Confidence: 34.5%\n[FLOW DESCRIPTION]: Network flow characteristics: Bwd Pkt Len Min is high (4.24); Bwd Pkt Len Mean is high (1.40); Bwd Seg Size Avg = 1.40; Protocol = 1.20; Pkt Size Avg is high (1.04); Pkt Len Min is high (0.98); Fwd Pkt Len Min is high (0.98); Fwd Seg Size Min = -0.87; Pkt Len Mean is high (0.87); Down/Up Ratio = 0.67.\n[REASON]: The network flow matches Malware patterns. We observed slow-rate exhaustion or application exploits (e.g., DoS-Slowloris, DoS-SlowHTTPTest). Unlike high-rate Botnet flooding, this traffic uses low packet frequency but holds sockets open, which the hybrid model detected via temporal features and text embeddings.\n[ATTACK TYPE]: Malware (Benign)\n[RECOMMENDATION]: Immediate action required. Terminate active slow connections. Configure Web Server timeout settings (e.g., RequestReadTimeout). Deploy a Web Application Firewall (WAF) to filter slow-rate connection hijacking."
+    }
+  ]
+}

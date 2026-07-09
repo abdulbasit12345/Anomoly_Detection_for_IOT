@@ -1,0 +1,7 @@
+2026-05-10 00:53:37,864 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-05-10 00:53:40,688 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199998, 80)
+2026-05-10 00:53:41,019 [INFO] src.data_processing.preprocessor:    Label distribution:
+0    127339
+1     72659
+2026-05-10 00:53:42,893 [INFO] src.data_processing.preprocessor:    Features after cleaning: 78
+2026-05-10 00:53:43,985 [INFO] src.data_processing.preprocessor:    Train=139998  Val=20000  Test=40000

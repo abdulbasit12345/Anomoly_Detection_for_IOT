@@ -1,0 +1,29 @@
+2026-07-07 19:09:12,503 [INFO] MAIN:  Starting GAN + CTGAN + DistilBERT IoT Anomaly Detection Pipeline
+2026-07-07 19:09:12,504 [INFO] MAIN:  Device: cpu | CPU threads: 2
+2026-07-07 19:09:12,504 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-07 19:09:12,507 [ERROR] MAIN:  Pipeline failed: [Errno 2] No such file or directory: '/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv'
+Traceback (most recent call last):
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/main.py", line 303, in <module>
+    main()
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/main.py", line 76, in main
+    data = load_and_preprocess(config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/src/data_processing/preprocessor.py", line 17, in load_and_preprocess
+    df = pd.read_csv(config.RAW_DATA_PATH)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv'

@@ -1,0 +1,37 @@
+2026-05-24 23:24:34,594 [INFO] MAIN:  Starting GAN + BERT Hybrid Anomaly Detection
+2026-05-24 23:24:34,594 [INFO] MAIN:  Device: cpu
+2026-05-24 23:24:34,594 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-14-2018.csv
+2026-05-24 23:24:44,345 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-05-24 23:24:45,676 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199998, 80)
+2026-05-24 23:24:45,898 [INFO] src.data_processing.preprocessor:    Label distribution:
+binary_label
+0    127339
+1     72659
+2026-05-24 23:24:46,189 [INFO] src.data_processing.preprocessor:    Features after cleaning: 78
+2026-05-24 23:24:46,706 [INFO] src.data_processing.preprocessor:    Train=139998  Val=20000  Test=40000
+2026-05-24 23:24:47,023 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed
+2026-05-24 23:24:47,076 [INFO] MAIN:  Training Baseline Classifier...
+2026-05-24 23:24:47,141 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 139998
+2026-05-24 23:24:53,251 [INFO] src.training.train_classifier:   [Epoch  1/30]  tr_loss=0.6543  vl_loss=0.6412  tr_acc=0.3633  vl_acc=0.3633  vl_f1=0.5330
+2026-05-24 23:25:07,996 [INFO] src.training.train_classifier:   [Epoch  5/30]  tr_loss=0.6409  vl_loss=0.6408  tr_acc=0.3633  vl_acc=0.3633  vl_f1=0.5330
+2026-05-24 23:25:17,628 [INFO] src.training.train_classifier:    Early stopping at epoch 8 (best val_f1=0.5330)
+2026-05-24 23:25:17,636 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:  base_Metrics:
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:    base_accuracy                       0.3633
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:    base_precision                      0.3633
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:    base_recall                         1.0000
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:    base_f1_score                       0.5330
+2026-05-24 23:25:17,855 [INFO] src.evaluation.metrics:    base_roc_auc                        1.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_pr_auc                         1.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Benign_precision               0.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Benign_recall                  0.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Benign_f1                      0.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Anomaly_precision              0.3633
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Anomaly_recall                 1.0000
+2026-05-24 23:25:17,856 [INFO] src.evaluation.metrics:    base_Anomaly_f1                     0.5330
+2026-05-24 23:25:17,856 [INFO] MAIN:  Training GAN for Data Augmentation...
+2026-05-24 23:25:17,877 [INFO] src.training.train_gan:  GAN Training | Anomaly samples: 50861 | Epochs: 200
+2026-05-24 23:25:22,809 [INFO] src.training.train_gan:   [Epoch   1/200]  G_loss=0.8811  D_loss=0.5404
+2026-05-24 23:27:12,248 [INFO] src.training.train_gan:   [Epoch  20/200]  G_loss=2.7578  D_loss=0.0736
+2026-05-24 23:29:37,215 [INFO] src.training.train_gan:   [Epoch  40/200]  G_loss=4.0621  D_loss=0.0200
+2026-05-24 23:32:25,776 [INFO] src.training.train_gan:   [Epoch  60/200]  G_loss=5.2349  D_loss=0.0064

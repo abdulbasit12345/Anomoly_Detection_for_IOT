@@ -1,0 +1,100 @@
+{
+  "comparison_table": [
+    {
+      "Model": "Tabular Baseline (MLP)",
+      "Accuracy": "0.9992",
+      "Balanced Accuracy": "0.9954",
+      "Precision": "0.9814",
+      "Recall": "0.9954",
+      "F1 Score": "0.9882",
+      "Roc Auc": "0.9999"
+    },
+    {
+      "Model": "Tabular Simple GAN + MLP",
+      "Accuracy": "0.9992",
+      "Balanced Accuracy": "0.9962",
+      "Precision": "0.9818",
+      "Recall": "0.9962",
+      "F1 Score": "0.9888",
+      "Roc Auc": "1.0000"
+    },
+    {
+      "Model": "Tabular CTGAN + MLP",
+      "Accuracy": "0.9991",
+      "Balanced Accuracy": "0.9952",
+      "Precision": "0.9814",
+      "Recall": "0.9952",
+      "F1 Score": "0.9881",
+      "Roc Auc": "0.9999"
+    },
+    {
+      "Model": "Hybrid Baseline",
+      "Accuracy": "0.9998",
+      "Balanced Accuracy": "0.9968",
+      "Precision": "0.9977",
+      "Recall": "0.9968",
+      "F1 Score": "0.9973",
+      "Roc Auc": "1.0000"
+    },
+    {
+      "Model": "Hybrid Simple GAN + DistilBERT",
+      "Accuracy": "0.9998",
+      "Balanced Accuracy": "0.9968",
+      "Precision": "0.9977",
+      "Recall": "0.9968",
+      "F1 Score": "0.9973",
+      "Roc Auc": "1.0000"
+    },
+    {
+      "Model": "Hybrid CTGAN + DistilBERT",
+      "Accuracy": "0.9997",
+      "Balanced Accuracy": "0.9968",
+      "Precision": "0.9967",
+      "Recall": "0.9968",
+      "F1 Score": "0.9967",
+      "Roc Auc": "1.0000"
+    }
+  ],
+  "simple_gan_augmented_classifier": {
+    "accuracy": 0.99925,
+    "balanced_accuracy": 0.996186,
+    "precision": 0.98183,
+    "recall": 0.996186,
+    "f1_score": 0.988849,
+    "n_predicted_anomaly": 2023,
+    "n_true_anomaly": 2003,
+    "false_positive_rate": 0.0006,
+    "roc_auc": 0.999961,
+    "Benign_precision": 0.999895,
+    "Benign_recall": 0.999368,
+    "Benign_f1": 0.999631,
+    "Botnet_precision": 0.998107,
+    "Botnet_recall": 0.998737,
+    "Botnet_f1": 0.998422,
+    "Malware_precision": 0.947489,
+    "Malware_recall": 0.990453,
+    "Malware_f1": 0.968495
+  },
+  "ctgan_augmented_classifier": {
+    "accuracy": 0.99915,
+    "balanced_accuracy": 0.995163,
+    "precision": 0.981353,
+    "recall": 0.995163,
+    "f1_score": 0.988115,
+    "n_predicted_anomaly": 2023,
+    "n_true_anomaly": 2003,
+    "false_positive_rate": 0.0007,
+    "roc_auc": 0.999931,
+    "Benign_precision": 0.999842,
+    "Benign_recall": 0.999316,
+    "Benign_f1": 0.999579,
+    "Botnet_precision": 0.996847,
+    "Botnet_recall": 0.998106,
+    "Botnet_f1": 0.997476,
+    "Malware_precision": 0.947368,
+    "Malware_recall": 0.988067,
+    "Malware_f1": 0.96729
+  },
+  "simple_gan_plots_dir": "results/simple_gan/plots/",
+  "ctgan_plots_dir": "results/ctgan/plots/"
+}

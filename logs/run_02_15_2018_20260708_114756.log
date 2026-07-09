@@ -1,0 +1,222 @@
+2026-07-08 11:47:56,678 [INFO] numexpr.utils: NumExpr defaulting to 8 threads.
+2026-07-08 11:48:14,312 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 11:48:14,313 [INFO] RUN_ON_FILE:  Run tag   : 02_15_2018
+2026-07-08 11:48:14,314 [INFO] RUN_ON_FILE:  CSV file  : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 11:48:14,315 [INFO] RUN_ON_FILE:  Results   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018
+2026-07-08 11:48:14,315 [INFO] RUN_ON_FILE:  Device    : cpu | CPU threads: 2
+2026-07-08 11:48:14,316 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 11:48:14,316 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-08 11:48:50,529 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-07-08 11:48:51,533 [INFO] src.data_processing.preprocessor:    After stratified sampling: (48, 80)
+2026-07-08 11:48:51,550 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet']
+2026-07-08 11:48:51,557 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    47
+1     1
+2026-07-08 11:48:51,597 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-08 11:48:51,611 [INFO] src.data_processing.preprocessor:    Train=33  Val=5  Test=10
+2026-07-08 11:48:51,649 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed_02_15_2018
+2026-07-08 11:48:51,649 [INFO] RUN_ON_FILE:  Training Baseline Tabular MLP...
+2026-07-08 11:48:51,671 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 33  (real=33  synth=0)
+2026-07-08 11:48:51,776 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=0.8372  vl_loss=0.9720  tr_acc=0.7576  vl_acc=1.0000  vl_f1_macro=1.0000
+2026-07-08 11:48:51,839 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/classifier_baseline.pt
+2026-07-08 11:48:51,887 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:48:51,887 [INFO] src.evaluation.metrics:    accuracy                                 0.9000
+2026-07-08 11:48:51,887 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9000
+2026-07-08 11:48:51,887 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    recall                                   0.4500
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    f1_score                                 0.4737
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      1
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    false_positive_rate                      0.1000
+2026-07-08 11:48:51,888 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Benign_recall                            0.9000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Benign_f1                                0.9474
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:48:51,889 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:48:51,890 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:48:52,432 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/confusion_matrix.png
+2026-07-08 11:48:53,190 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/roc_pr_curves.png
+2026-07-08 11:48:53,779 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/per_class_heatmap.png
+2026-07-08 11:48:53,779 [INFO] RUN_ON_FILE:  [Simple GAN] Training Class Generators...
+2026-07-08 11:48:53,780 [INFO] src.training.train_gan:  Starting GAN Training. Minority classes to balance: [1]
+2026-07-08 11:48:53,780 [INFO] src.training.train_gan:  --- Training GAN for Class 1 (Samples: 1, Epochs: 2) ---
+2026-07-08 11:48:53,780 [WARNING] src.training.train_gan:  Skipping GAN training for Class 1 because sample count is too low (1)
+2026-07-08 11:48:53,781 [INFO] src.training.train_gan:  GAN training complete. Total synthetic samples: 0
+2026-07-08 11:48:54,075 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/gan_loss_curves.png
+2026-07-08 11:48:54,075 [WARNING] src.evaluation.visualizer:  No synthetic samples to plot for PCA.
+2026-07-08 11:48:54,373 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/class_distribution_comparison.png
+2026-07-08 11:48:54,374 [INFO] RUN_ON_FILE:  [Simple GAN] Training augmented tabular classifier...
+2026-07-08 11:48:54,380 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 33  (real=33  synth=0)
+2026-07-08 11:48:54,426 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=0.9106  vl_loss=0.9808  tr_acc=0.5758  vl_acc=1.0000  vl_f1_macro=1.0000
+2026-07-08 11:48:54,480 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/models/classifier_gan.pt
+2026-07-08 11:48:54,505 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:48:54,505 [INFO] src.evaluation.metrics:    accuracy                                 0.9000
+2026-07-08 11:48:54,505 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9000
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    recall                                   0.4500
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    f1_score                                 0.4737
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      1
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:48:54,506 [INFO] src.evaluation.metrics:    false_positive_rate                      0.1000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Benign_recall                            0.9000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Benign_f1                                0.9474
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:48:54,507 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:48:54,508 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:48:54,508 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:48:54,862 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/confusion_matrix.png
+2026-07-08 11:48:55,431 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/roc_pr_curves.png
+2026-07-08 11:48:55,687 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/per_class_heatmap.png
+2026-07-08 11:48:55,687 [INFO] RUN_ON_FILE:  [CTGAN] Training Class Generators...
+2026-07-08 11:48:56,186 [INFO] src.training.train_ctgan:  Starting CTGAN Training. Minority classes to balance: [1]
+2026-07-08 11:48:56,186 [INFO] src.training.train_ctgan:  --- Training CTGAN for Class 1 (Samples: 1) ---
+2026-07-08 11:48:56,186 [WARNING] src.training.train_ctgan:  Skipping CTGAN training for Class 1 because sample count is too low (1)
+2026-07-08 11:48:56,186 [INFO] src.training.train_ctgan:  CTGAN training complete. Total synthetic samples: 0
+2026-07-08 11:48:56,383 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/gan_loss_curves.png
+2026-07-08 11:48:56,383 [WARNING] src.evaluation.visualizer:  No synthetic samples to plot for PCA.
+2026-07-08 11:48:56,632 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/class_distribution_comparison.png
+2026-07-08 11:48:56,632 [INFO] RUN_ON_FILE:  [CTGAN] Training augmented tabular classifier...
+2026-07-08 11:48:56,637 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 33  (real=33  synth=0)
+2026-07-08 11:48:56,672 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=0.9003  vl_loss=1.1049  tr_acc=0.6061  vl_acc=0.0000  vl_f1_macro=0.0000
+2026-07-08 11:48:56,714 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/models/classifier_ctgan.pt
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    accuracy                                 0.1000
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.1000
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    recall                                   0.0500
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    f1_score                                 0.0909
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      9
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    false_positive_rate                      0.9000
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 11:48:56,739 [INFO] src.evaluation.metrics:    Benign_recall                            0.1000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Benign_f1                                0.1818
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:48:56,740 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:48:57,028 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/confusion_matrix.png
+2026-07-08 11:48:57,518 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/roc_pr_curves.png
+2026-07-08 11:48:57,765 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/per_class_heatmap.png
+2026-07-08 11:48:57,766 [INFO] RUN_ON_FILE:  Extracting DistilBERT features for hybrid multimodal network...
+2026-07-08 11:48:57,768 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 11:49:01,284 [INFO] src.models.hybrid_model:  Extracting embeddings for 33 sequences...
+2026-07-08 11:49:03,107 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 11:49:05,439 [INFO] src.models.hybrid_model:  Extracting embeddings for 5 sequences...
+2026-07-08 11:49:05,714 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 11:49:06,831 [INFO] src.models.hybrid_model:  Extracting embeddings for 10 sequences...
+2026-07-08 11:49:07,403 [INFO] RUN_ON_FILE:  Training Hybrid Baseline Model...
+2026-07-08 11:49:07,407 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 11:49:07,435 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/2] loss=1.1194 val_loss=1.0936 val_acc=0.0000 val_f1_macro=0.0000
+2026-07-08 11:49:07,460 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.0000) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/hybrid_baseline.pt
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    accuracy                                 0.1000
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.1000
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    recall                                   0.0500
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    f1_score                                 0.0909
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      9
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    false_positive_rate                      0.9000
+2026-07-08 11:49:07,490 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Benign_recall                            0.1000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Benign_f1                                0.1818
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:49:07,491 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:49:07,492 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:49:07,492 [INFO] RUN_ON_FILE:  Training Hybrid Simple GAN Augmented Model...
+2026-07-08 11:49:07,499 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 11:49:07,528 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/2] loss=1.0102 val_loss=1.1079 val_acc=0.0000 val_f1_macro=0.0000
+2026-07-08 11:49:07,558 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.0000) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/hybrid_gan.pt
+2026-07-08 11:49:07,587 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    accuracy                                 0.1000
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.1000
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    precision                                0.5000
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    recall                                   0.0500
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    f1_score                                 0.0909
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      9
+2026-07-08 11:49:07,588 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:49:07,589 [INFO] src.evaluation.metrics:    false_positive_rate                      0.9000
+2026-07-08 11:49:07,589 [INFO] src.evaluation.metrics:    Benign_precision                         1.0000
+2026-07-08 11:49:07,589 [INFO] src.evaluation.metrics:    Benign_recall                            0.1000
+2026-07-08 11:49:07,589 [INFO] src.evaluation.metrics:    Benign_f1                                0.1818
+2026-07-08 11:49:07,589 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:49:07,590 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:49:07,590 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:49:07,590 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:49:07,590 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:49:07,590 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:49:07,590 [INFO] RUN_ON_FILE:  Training Hybrid CTGAN Augmented Model...
+2026-07-08 11:49:07,595 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 11:49:07,626 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/2] loss=1.3352 val_loss=1.1437 val_acc=0.0000 val_f1_macro=0.0000
+2026-07-08 11:49:07,664 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.0000) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/hybrid_ctgan.pt
+2026-07-08 11:49:07,699 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 11:49:07,699 [INFO] src.evaluation.metrics:    accuracy                                 0.0000
+2026-07-08 11:49:07,699 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    precision                                0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    recall                                   0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    f1_score                                 0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      10
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    n_true_anomaly                           0
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    false_positive_rate                      1.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    Benign_precision                         0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    Benign_recall                            0.0000
+2026-07-08 11:49:07,700 [INFO] src.evaluation.metrics:    Benign_f1                                0.0000
+2026-07-08 11:49:07,701 [INFO] src.evaluation.metrics:    Botnet_precision                         0.0000
+2026-07-08 11:49:07,701 [INFO] src.evaluation.metrics:    Botnet_recall                            0.0000
+2026-07-08 11:49:07,701 [INFO] src.evaluation.metrics:    Botnet_f1                                0.0000
+2026-07-08 11:49:07,701 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 11:49:07,701 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 11:49:07,702 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 11:49:07,714 [INFO] src.evaluation.metrics: 
+ Model Comparison Table:
+                               Accuracy Balanced Accuracy Precision  Recall F1 Score Roc Auc
+Model                                                                                       
+Tabular Baseline (MLP)           0.9000            0.9000    0.5000  0.4500   0.4737  0.0000
+Tabular Simple GAN + MLP         0.9000            0.9000    0.5000  0.4500   0.4737  0.0000
+Tabular CTGAN + MLP              0.1000            0.1000    0.5000  0.0500   0.0909  0.0000
+Hybrid Baseline                  0.1000            0.1000    0.5000  0.0500   0.0909  0.0000
+Hybrid Simple GAN + DistilBERT   0.1000            0.1000    0.5000  0.0500   0.0909  0.0000
+Hybrid CTGAN + DistilBERT        0.0000            0.0000    0.0000  0.0000   0.0000  0.0000
+2026-07-08 11:49:08,253 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/comparison/metric_comparison.png
+2026-07-08 11:49:08,681 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/plots/metric_comparison.png
+2026-07-08 11:49:08,684 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/attack_type_breakdown.png
+2026-07-08 11:49:08,689 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/simple_gan/plots/metric_comparison.png
+2026-07-08 11:49:08,691 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/attack_type_breakdown.png
+2026-07-08 11:49:08,697 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/ctgan/plots/metric_comparison.png
+2026-07-08 11:49:08,707 [INFO] src.evaluation.visualizer:  GAN vs CTGAN comparison report: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-08 11:49:08,716 [INFO] src.evaluation.visualizer:  GAN vs CTGAN JSON saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/comparison/gan_vs_ctgan_metrics.json
+2026-07-08 11:49:08,717 [INFO] RUN_ON_FILE:  Best performing Hybrid model: base (F1=0.0909)
+2026-07-08 11:49:09,094 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/plots/confusion_matrix.png
+2026-07-08 11:49:09,668 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/plots/roc_pr_curves.png
+2026-07-08 11:49:09,945 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/plots/per_class_heatmap.png
+2026-07-08 11:49:09,948 [INFO] RUN_ON_FILE:  Computing attack-type detection breakdown...
+2026-07-08 11:49:09,948 [INFO] src.evaluation.metrics:  Attack Summary: 0/0 detected (0.0%) | FP: 9/10 benign (90.0%)
+2026-07-08 11:49:09,948 [INFO] RUN_ON_FILE:  Initializing Local Hybrid DistilBERT Explainer...
+2026-07-08 11:49:09,949 [INFO] src.explainability.hybrid_explainer:  Generating Hybrid DistilBERT-based explanations for 1 samples...
+2026-07-08 11:49:09,955 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/plots/pca_synthetic.png
+2026-07-08 11:49:09,972 [INFO] src.evaluation.visualizer:  HTML Report saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/explanation_report.html
+2026-07-08 11:49:09,977 [INFO] src.evaluation.visualizer:  JSON Results saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/results.json
+2026-07-08 11:49:09,978 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 11:49:09,978 [INFO] RUN_ON_FILE:  Pipeline complete for tag        : 02_15_2018
+2026-07-08 11:49:09,979 [INFO] RUN_ON_FILE:  Best Hybrid Model                : base
+2026-07-08 11:49:09,979 [INFO] RUN_ON_FILE:  Final F1-Score (macro)           : 0.0909
+2026-07-08 11:49:09,981 [INFO] RUN_ON_FILE:  Final Accuracy                   : 0.1000
+2026-07-08 11:49:09,981 [INFO] RUN_ON_FILE:  Attacks detected / total         : 0 / 0 (0.0%)
+2026-07-08 11:49:09,982 [INFO] RUN_ON_FILE:  False Positive Rate              : 90.0%
+2026-07-08 11:49:09,982 [INFO] RUN_ON_FILE:  GAN vs CTGAN comparison          : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-08 11:49:09,982 [INFO] RUN_ON_FILE:  Main report                      : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/reports/explanation_report.html
+2026-07-08 11:49:09,982 [INFO] RUN_ON_FILE:  Results folder                   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018
+2026-07-08 11:49:09,983 [INFO] RUN_ON_FILE: ============================================================

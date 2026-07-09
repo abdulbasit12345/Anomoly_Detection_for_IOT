@@ -1,0 +1,87 @@
+2026-07-08 09:07:45,798 [INFO] numexpr.utils: NumExpr defaulting to 8 threads.
+2026-07-08 09:07:57,672 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 09:07:57,673 [INFO] RUN_ON_FILE:  Run tag   : test_data2
+2026-07-08 09:07:57,673 [INFO] RUN_ON_FILE:  CSV file  : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/test_data2.csv
+2026-07-08 09:07:57,673 [INFO] RUN_ON_FILE:  Results   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2
+2026-07-08 09:07:57,673 [INFO] RUN_ON_FILE:  Device    : cpu | CPU threads: 2
+2026-07-08 09:07:57,673 [INFO] RUN_ON_FILE: ============================================================
+2026-07-08 09:07:57,673 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/test_data2.csv
+2026-07-08 09:07:57,681 [INFO] src.data_processing.preprocessor:    Raw shape: (50, 80)
+2026-07-08 09:07:57,686 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet']
+2026-07-08 09:07:57,687 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    30
+1    20
+2026-07-08 09:07:57,713 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-08 09:07:57,717 [INFO] src.data_processing.preprocessor:    Train=35  Val=5  Test=10
+2026-07-08 09:07:57,726 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed_test_data2
+2026-07-08 09:07:57,726 [INFO] RUN_ON_FILE:  Training Baseline Tabular MLP...
+2026-07-08 09:07:57,733 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 35  (real=35  synth=0)
+2026-07-08 09:07:57,787 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=1.3983  vl_loss=1.1066  tr_acc=0.1143  vl_acc=0.2000  vl_f1_macro=0.2222
+2026-07-08 09:07:57,824 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/models/classifier_baseline.pt
+2026-07-08 09:07:57,843 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 09:07:57,843 [INFO] src.evaluation.metrics:    accuracy                                 0.4000
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.5000
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    precision                                0.3333
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    recall                                   0.3333
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    f1_score                                 0.3333
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      10
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    n_true_anomaly                           4
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    false_positive_rate                      1.0000
+2026-07-08 09:07:57,844 [INFO] src.evaluation.metrics:    Benign_precision                         0.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Benign_recall                            0.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Benign_f1                                0.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Botnet_precision                         1.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Botnet_f1                                1.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 09:07:57,845 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 09:07:58,106 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/models/confusion_matrix.png
+2026-07-08 09:07:58,462 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/models/roc_pr_curves.png
+2026-07-08 09:07:58,638 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/models/per_class_heatmap.png
+2026-07-08 09:07:58,638 [INFO] RUN_ON_FILE:  [Simple GAN] Training Class Generators...
+2026-07-08 09:07:58,638 [INFO] src.training.train_gan:  Starting GAN Training. Minority classes to balance: [1]
+2026-07-08 09:07:58,638 [INFO] src.training.train_gan:  --- Training GAN for Class 1 (Samples: 14, Epochs: 2) ---
+2026-07-08 09:07:58,671 [INFO] src.training.train_gan:   [Class 1 - Epoch   1/2]  G_loss=0.6872  D_loss=0.6870
+2026-07-08 09:07:58,787 [INFO] src.training.train_gan:  GAN Class 1 filter (D-score >= 0.55): kept 0 / 10000 samples (0.0%)
+2026-07-08 09:07:58,787 [WARNING] src.training.train_gan:  Anti-evasion filter removed ALL samples! Keeping top-50%% by D-score.
+2026-07-08 09:07:58,800 [INFO] src.training.train_gan:  GAN training complete. Total synthetic samples: 5000
+2026-07-08 09:07:58,976 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/simple_gan/plots/gan_loss_curves.png
+2026-07-08 09:07:59,431 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/simple_gan/plots/pca_synthetic.png
+2026-07-08 09:07:59,615 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/simple_gan/plots/class_distribution_comparison.png
+2026-07-08 09:07:59,616 [INFO] RUN_ON_FILE:  [Simple GAN] Training augmented tabular classifier...
+2026-07-08 09:07:59,622 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 5035  (real=35  synth=5000)
+2026-07-08 09:07:59,912 [INFO] src.training.train_classifier:   [Epoch  1/2]  tr_loss=0.6989  vl_loss=1.3055  tr_acc=0.6705  vl_acc=0.4000  vl_f1_macro=0.2857
+2026-07-08 09:08:00,175 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_test_data2/simple_gan/models/classifier_gan.pt
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    accuracy                                 0.4000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.5000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    precision                                0.2000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    recall                                   0.5000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    f1_score                                 0.2857
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      10
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    n_true_anomaly                           4
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    false_positive_rate                      1.0000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    Benign_precision                         0.0000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    Benign_recall                            0.0000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    Benign_f1                                0.0000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    Botnet_precision                         0.4000
+2026-07-08 09:08:00,192 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-08 09:08:00,193 [INFO] src.evaluation.metrics:    Botnet_f1                                0.5714
+2026-07-08 09:08:00,193 [INFO] src.evaluation.metrics:    Malware_precision                        0.0000
+2026-07-08 09:08:00,193 [INFO] src.evaluation.metrics:    Malware_recall                           0.0000
+2026-07-08 09:08:00,193 [INFO] src.evaluation.metrics:    Malware_f1                               0.0000
+2026-07-08 09:08:00,219 [ERROR] RUN_ON_FILE:  Pipeline failed: index 2 is out of bounds for axis 1 with size 2
+Traceback (most recent call last):
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 422, in <module>
+    main()
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 226, in main
+    simple_gan_metrics, _, _ = _evaluate_classifier(gan_model, data, device, run_cfg.SIMPLE_GAN_PLOTS_DIR)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/run_on_file.py", line 146, in _evaluate_classifier
+    plot_confusion_matrix(cm, run_cfg.CLASS_NAMES_3CLASS, plots_dir)
+  File "/Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/src/evaluation/visualizer.py", line 111, in plot_confusion_matrix
+    txt_color = TEXT if cm_pct[i, j] < 60 else BG
+                        ~~~~~~^^^^^^
+IndexError: index 2 is out of bounds for axis 1 with size 2
