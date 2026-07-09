@@ -49,30 +49,88 @@ def _save(fig, path: str):
     logger.info("    Saved: %s", path)
 
 def plot_gan_losses(g_losses: list, d_losses: list, save_dir: str):
+    """
+    Plot GAN training loss curves with:
+    - y=0 reference line (helps visualise convergence)
+    - Rolling-average smoothing for long runs (100+ epochs)
+    - WGAN-GP annotation box explaining negative loss semantics
+    """
     _apply_dark_style()
-    fig, ax = plt.subplots(figsize=(10, 4))
-    epochs  = range(1, len(g_losses) + 1)
-    ax.plot(epochs, g_losses, color=PURP, lw=2, label="Generator Loss")
-    ax.plot(epochs, d_losses, color=PINK, lw=2, label="Discriminator Loss")
-    ax.fill_between(epochs, g_losses, alpha=0.15, color=PURP)
-    ax.fill_between(epochs, d_losses, alpha=0.15, color=PINK)
-    
-    # Check if there are negative losses (standard for WGAN-GP in CTGAN)
+
+    # Detect GAN type from loss sign
     has_neg = any(x < 0 for x in g_losses) or any(x < 0 for x in d_losses)
-    title = "CTGAN (WGAN-GP) Loss Curves" if has_neg else "Simple GAN (BCE) Loss Curves"
-    
-    ax.set_title(title, fontsize=15, fontweight="bold", color=TEXT, pad=12)
-    ax.set_xlabel("Epoch")
-    ax.set_ylabel("Loss / Critic Score" if has_neg else "BCE Loss")
-    ax.legend()
+    is_wgan = has_neg
+
+    # Smooth curves with a rolling average when there are many epochs
+    def _smooth(vals, window=5):
+        if len(vals) < window * 2:
+            return vals
+        import pandas as _pd
+        return _pd.Series(vals).rolling(window, min_periods=1).mean().tolist()
+
+    g_smooth = _smooth(g_losses)
+    d_smooth = _smooth(d_losses)
+
+    epochs = list(range(1, len(g_losses) + 1))
+
+    fig, ax = plt.subplots(figsize=(11, 5))
+
+    # Raw (faint) + smoothed (solid)
+    ax.plot(epochs, g_losses, color=PURP, lw=0.8, alpha=0.3)
+    ax.plot(epochs, d_losses, color=PINK, lw=0.8, alpha=0.3)
+    ax.plot(epochs, g_smooth, color=PURP, lw=2.2, label="Generator Loss (smoothed)")
+    ax.plot(epochs, d_smooth, color=PINK, lw=2.2, label="Discriminator / Critic Loss (smoothed)")
+
+    ax.fill_between(epochs, g_smooth, alpha=0.12, color=PURP)
+    ax.fill_between(epochs, d_smooth, alpha=0.12, color=PINK)
+
+    # y = 0 reference line — crucial visual anchor
+    ax.axhline(0, color=GOLD, lw=1.2, linestyle="--", alpha=0.7, label="y = 0 reference")
+
+    title = "CTGAN (WGAN-GP) Critic Loss Curves" if is_wgan else "Simple GAN (BCE) Loss Curves"
+    ax.set_title(title, fontsize=15, fontweight="bold", color=TEXT, pad=14)
+    ax.set_xlabel("Epoch", fontsize=12)
+    ax.set_ylabel("Wasserstein Critic Score" if is_wgan else "BCE Loss", fontsize=12)
+    ax.legend(fontsize=10)
     ax.grid(True)
-    
-    if has_neg:
-        # Add note about negative values
-        fig.text(0.5, -0.05, "*Note: Negative loss values are mathematically normal for Wasserstein GANs (WGAN-GP), representing the critic score.",
-                 ha="center", va="center", color=GOLD, fontsize=8, fontstyle="italic")
-                 
+
+    if is_wgan:
+        # Annotate WGAN-GP semantics — this explains the "negative loss" concern
+        note = (
+            "WGAN-GP Explanation:\n"
+            "  • Negative values are MATHEMATICALLY CORRECT for Wasserstein GANs.\n"
+            "  • The critic outputs a real-valued score (not a probability 0-1).\n"
+            "  • Discriminator (critic) loss = -(real_score - fake_score)  →  converges negative.\n"
+            "  • Generator loss = -fake_score  →  decreases as the generator improves.\n"
+            "  • Convergence is indicated by both curves becoming less volatile over epochs."
+        )
+        ax.text(
+            0.01, 0.03, note,
+            transform=ax.transAxes,
+            fontsize=7.5,
+            color=GOLD,
+            verticalalignment="bottom",
+            bbox=dict(boxstyle="round,pad=0.5", facecolor=SURF, edgecolor=GOLD, alpha=0.85),
+        )
+    else:
+        note = (
+            "Simple GAN (BCE) Explanation:\n"
+            "  • Loss values should stay positive (binary cross-entropy is always ≥ 0).\n"
+            "  • Healthy convergence: Generator loss ~0.7, Discriminator loss ~0.7 (Nash equilibrium).\n"
+            "  • Generator improving = its loss decreasing toward 0."
+        )
+        ax.text(
+            0.01, 0.03, note,
+            transform=ax.transAxes,
+            fontsize=7.5,
+            color=TEAL,
+            verticalalignment="bottom",
+            bbox=dict(boxstyle="round,pad=0.5", facecolor=SURF, edgecolor=TEAL, alpha=0.85),
+        )
+
+    fig.tight_layout()
     _save(fig, os.path.join(save_dir, "gan_loss_curves.png"))
+
 
 def plot_training_history(history: dict, save_dir: str):
     _apply_dark_style()
@@ -190,31 +248,83 @@ def plot_roc_pr_curves(y_true: np.ndarray, y_proba: np.ndarray, save_dir: str):
     _save(fig, os.path.join(save_dir, "roc_pr_curves.png"))
 
 def plot_metric_comparison(comparison_df: pd.DataFrame, save_dir: str):
+    """
+    Grouped bar chart comparing model performance.
+
+    Fixes vs previous version:
+    - Y-axis dynamically zoomed to [min_val - 0.03, 1.005] so differences are visible
+    - Bar labels drawn INSIDE bars (rotated 90°) so they never overlap
+    - Reference lines at 0.95 and 0.99 for quick benchmarking
+    - Short model name labels to prevent legend overflow
+    """
     _apply_dark_style()
     metrics_to_plot = ["Accuracy", "Balanced Accuracy", "Precision", "Recall", "F1 Score"]
     avail   = [m for m in metrics_to_plot if m in comparison_df.columns]
     df_plot = comparison_df[avail].astype(float)
     models  = df_plot.index.tolist()
-    x       = np.arange(len(avail))
-    width   = 0.8 / len(models)
-    fig, ax = plt.subplots(figsize=(14, 7))
-    for i, model in enumerate(models):
+
+    # Shorten model names for legend readability
+    short_names = {
+        "Tabular Baseline (MLP)":           "Tabular Base",
+        "Tabular Simple GAN + MLP":         "GAN + MLP",
+        "Tabular CTGAN + MLP":              "CTGAN + MLP",
+        "Hybrid Baseline":                  "Hybrid Base",
+        "Hybrid Simple GAN + DistilBERT":   "GAN + BERT",
+        "Hybrid CTGAN + DistilBERT":        "CTGAN + BERT",
+    }
+    display_names = [short_names.get(m, m) for m in models]
+
+    x     = np.arange(len(avail))
+    width = 0.80 / len(models)
+    fig, ax = plt.subplots(figsize=(15, 7))
+
+    all_vals = df_plot.values.flatten()
+    y_min = max(0.0, float(all_vals.min()) - 0.04)
+    y_max = 1.010
+
+    for i, (model, dname) in enumerate(zip(models, display_names)):
         vals   = df_plot.loc[model].values
         offset = (i - len(models) / 2 + 0.5) * width
-        bars   = ax.bar(x + offset, vals, width, label=model,
-                        color=COLS[i % len(COLS)], alpha=0.85, edgecolor=BG, linewidth=0.8)
+        bars   = ax.bar(x + offset, vals - y_min, width,
+                        label=dname,
+                        color=COLS[i % len(COLS)], alpha=0.88,
+                        edgecolor=BG, linewidth=0.8,
+                        bottom=y_min)
+        # Labels INSIDE bars (vertical) — no overlap
         for bar, val in zip(bars, vals):
-            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.004,
-                    f"{val:.3f}", ha="center", va="bottom", fontsize=8,
-                    color=TEXT, fontweight="bold")
-    ax.set_xticks(x); ax.set_xticklabels(avail, fontsize=11, fontweight="bold")
-    ax.set_ylim(0, 1.14)
+            bar_h = bar.get_height()
+            if bar_h > 0.005:
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    y_min + bar_h / 2,
+                    f"{val:.4f}",
+                    ha="center", va="center",
+                    fontsize=7, color="white",
+                    fontweight="bold",
+                    rotation=90,
+                )
+
+    # Reference lines
+    for ref, style, lbl in [(0.99, "--", "0.99 ref"), (0.95, ":", "0.95 ref")]:
+        if ref > y_min:
+            ax.axhline(ref, color=GOLD, lw=1.0, linestyle=style, alpha=0.6, label=lbl)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(avail, fontsize=11, fontweight="bold")
+    ax.set_ylim(y_min, y_max)
+
+    # Y-axis: show real values not the offset ones
+    import matplotlib.ticker as mticker
+    ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.3f"))
     ax.set_ylabel("Score", fontsize=12)
-    ax.set_title("Model Performance Comparison", fontsize=15, fontweight="bold", color=TEXT, pad=15)
-    ax.legend(loc="lower right", fontsize=10)
-    ax.grid(True, axis="y")
+    ax.set_title("Model Performance Comparison", fontsize=15,
+                 fontweight="bold", color=TEXT, pad=15)
+    ax.legend(loc="lower right", fontsize=9, framealpha=0.7)
+    ax.grid(True, axis="y", alpha=0.4)
     fig.tight_layout()
     _save(fig, os.path.join(save_dir, "metric_comparison.png"))
+
+
 
 def plot_per_class_heatmap(metrics: dict, save_dir: str):
     _apply_dark_style()

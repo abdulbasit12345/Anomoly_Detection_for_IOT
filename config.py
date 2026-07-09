@@ -6,7 +6,7 @@ BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 DATA_DIR        = os.path.join(BASE_DIR, "data")
-RAW_DATA_PATH   = os.path.join(BASE_DIR, "test_data1.csv")
+RAW_DATA_PATH   = os.path.join(BASE_DIR, "combined_dataset.csv")
 PROCESSED_DIR   = os.path.join(DATA_DIR, "processed")
 RESULTS_DIR     = os.path.join(BASE_DIR, "results")
 PLOTS_DIR       = os.path.join(RESULTS_DIR, "plots")
@@ -26,10 +26,19 @@ CTGAN_MODELS_DIR        = os.path.join(CTGAN_DIR, "models")
 COMPARISON_REPORTS_DIR  = os.path.join(REPORTS_DIR, "comparison")
 
 LABEL_COL       = "Label"
-SAMPLE_SIZE     = 50
+# 5000 rows gives a statistically meaningful train/test split with all attack types.
+# Set to None to use the FULL 375MB combined_dataset.csv (takes ~1-2 hrs on CPU).
+SAMPLE_SIZE     = 5000
 RANDOM_STATE    = 42
 TEST_SIZE       = 0.20
 VAL_SIZE        = 0.10
+
+# ── Class Balancing ───────────────────────────────────────────────────
+# Cap Benign rows to MAX_BENIGN_RATIO × the LARGEST minority class count.
+# Without this, combined_dataset.csv has a 94:4:1 Benign:Botnet:Malware ratio
+# which causes models to get 94%+ accuracy simply by predicting everything Benign.
+# Setting MAX_BENIGN_RATIO=3 forces the model to actually learn attack patterns.
+MAX_BENIGN_RATIO = 3
 
 # NOTE: The preprocessor now auto-detects ALL non-Benign rows as anomaly (label=1).
 # This LABEL_MAP is kept for reference / legacy compatibility only.
@@ -56,22 +65,34 @@ ATTACK_TYPES = [
     "DoS attacks-Hulk", "DoS attacks-SlowHTTPTest",
 ]
 
-# ── GAN ────────────────────────────────────────────────────────────────────────
+# ── GAN (WGAN-GP) ──────────────────────────────────────────────────────────────
+# Switched to WGAN-GP to fix mode collapse observed in previous runs.
+# The old BCE GAN had Generator loss diverging to 4.0 while Discriminator
+# collapsed to 0 (textbook mode collapse). WGAN-GP is mathematically stable.
 LATENT_DIM      = 64
-GAN_EPOCHS      = 2
+# WGAN-GP converges faster than BCE GAN — 50 epochs is sufficient.
+GAN_EPOCHS      = 50
 GAN_BATCH_SIZE  = 256
-GAN_LR_G        = 2e-4
-GAN_LR_D        = 2e-4
-GAN_BETAS       = (0.5, 0.999)
+GAN_LR_G        = 1e-4   # lower LR for WGAN-GP stability
+GAN_LR_D        = 1e-4
+GAN_BETAS       = (0.0, 0.9)  # WGAN-GP recommended betas (no momentum)
 GAN_SYNTHETIC_SAMPLES = 10_000
+# Train discriminator (critic) N_CRITIC times per generator step.
+# Standard WGAN-GP practice: D sees more data, converges before G overfits.
+GAN_N_CRITIC    = 5
+# Gradient penalty weight — standard WGAN-GP value
+GAN_GP_LAMBDA   = 10.0
 
-# ── GAN anti-evasion quality gate ─────────────────────────────────────────────
-# Synthetic samples where D(x) < DISC_QUALITY_THRESHOLD are discarded;
-# they look too much like normal traffic to augment the anomaly class.
-DISC_QUALITY_THRESHOLD = 0.55
+# ── GAN quality gate ──────────────────────────────────────────────────────────────
+# WGAN-GP critic outputs are unbounded real values (not 0-1 probabilities).
+# Threshold must be 0.0 so all generated samples are kept (filtered by
+# Mahalanobis distance in post-processing instead).
+DISC_QUALITY_THRESHOLD = 0.0
 
 # ── CTGAN ──────────────────────────────────────────────────────────────────────
-CTGAN_EPOCHS            = 2
+# CTGAN (WGAN-GP) also requires many epochs. Negative loss values are NORMAL
+# for Wasserstein GANs — they represent the critic score, not BCE.
+CTGAN_EPOCHS            = 100
 CTGAN_BATCH_SIZE        = 500
 CTGAN_LR                = 2e-4
 CTGAN_PAC               = 10
@@ -82,16 +103,32 @@ CTGAN_MAX_TRAIN_ROWS    = None    # None = use all anomaly rows
 CTGAN_MAHAL_PERCENTILE  = 95
 
 # ── Classifier ─────────────────────────────────────────────────────────────────
-CLF_EPOCHS       = 2
-CLF_BATCH_SIZE   = 256          # ↓ was 512 — smaller batches → better gradient signal
-CLF_LR           = 3e-4        # ↓ was 1e-3 — stable convergence
-CLF_HIDDEN       = [512, 256, 128, 64]  # ↑ was [256,128,64] — deeper network
-CLF_DROPOUT      = 0.4          # ↑ was 0.3 — more regularisation
+# 50 epochs gives the OneCycleLR scheduler enough steps to warm up and
+# converge. 2 epochs produced only 2 data points on the training history plot
+# (flatline), and the model never moved past random initialization accuracy.
+CLF_EPOCHS       = 50
+CLF_BATCH_SIZE   = 256          # smaller batches → better gradient signal
+CLF_LR           = 3e-4        # stable convergence
+CLF_HIDDEN       = [512, 256, 128, 64]
+CLF_DROPOUT      = 0.4
 CLF_WEIGHT_DECAY = 1e-4
+# Early stopping patience: must be > OneCycleLR warmup period.
+# With pct_start=0.1 and 50 epochs, warmup = 5 epochs. Patience=15 ensures
+# the model trains well past warmup before stopping.
+CLF_EARLY_STOP_PATIENCE = 15
 
-# Focal Loss parameters (replaces BCE — designed for class-imbalanced data)
-FOCAL_GAMMA      = 2.0          # focusing parameter; 0 = standard CE
-FOCAL_ALPHA      = 0.75         # weight for the positive (anomaly) class
+# Label smoothing prevents the model from becoming overconfident (100% confidence).
+# Smoothing=0.1 means the target distribution is 90% correct class + 10% spread.
+# This produced calibrated probabilities (e.g., 82%) instead of always 100%.
+LABEL_SMOOTHING  = 0.1
+
+# OneCycleLR warmup fraction: 10% = 5 epochs warm-up out of 50 total.
+# Previous setting (30%) caused early stopping to fire before warmup finished.
+CLF_PCT_START    = 0.1
+
+# Focal Loss parameters (kept for reference)
+FOCAL_GAMMA      = 2.0
+FOCAL_ALPHA      = 0.75
 
 # ── Threshold search ───────────────────────────────────────────────────────────
 # After training, sweep thresholds on the validation set to find the one that
@@ -117,7 +154,8 @@ BERT_BATCH_SIZE     = 64
 BERT_LR             = 2e-5
 BERT_EPOCHS         = 1
 FREEZE_BERT         = True       # Frozen backbone is extremely fast on CPU
-NUM_EXPLAIN_SAMPLES = 1
+# Generate explanations for samples from EACH class (Benign, Botnet, Malware)
+NUM_EXPLAIN_SAMPLES = 6
 
 # ── PCA & t-SNE Plotting ───────────────────────────────────────────────────────
 PCA_SAMPLE_SIZE     = 1000       # Number of samples to plot in PCA/t-SNE for speed

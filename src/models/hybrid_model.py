@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from transformers import DistilBertTokenizer, DistilBertModel
 from tqdm import tqdm
+from src.training.train_classifier import EarlyStopping
 
 logger = logging.getLogger(__name__)
 
@@ -132,15 +133,33 @@ def train_hybrid_classifier(config, model, X_train, X_train_emb, y_train,
     train_loader = DataLoader(train_ds, batch_size=config.CLF_BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_ds,   batch_size=config.CLF_BATCH_SIZE, shuffle=False)
     
-    criterion = nn.CrossEntropyLoss()
+    # ── Class-weighted loss ─────────────────────────────────────────────────
+    # Mirror the same class-weighting as the tabular classifier so Malware
+    # does not get suppressed by the large Benign majority.
+    num_classes = 3
+    class_counts = np.bincount(y_train.astype(np.int64), minlength=num_classes).astype(np.float64)
+    class_counts = np.maximum(class_counts, 1.0)
+    class_weights = 1.0 / class_counts
+    class_weights = class_weights / class_weights.sum() * num_classes
+    weight_tensor = torch.tensor(class_weights, dtype=torch.float32).to(device)
+    logger.info(" Hybrid class weights → Benign=%.3f  Botnet=%.3f  Malware=%.3f",
+                class_weights[0], class_weights[1], class_weights[2])
+    criterion = nn.CrossEntropyLoss(weight=weight_tensor,
+                                     label_smoothing=getattr(config, "LABEL_SMOOTHING", 0.0))
+    logger.info(" Hybrid CrossEntropyLoss | label_smoothing=%.2f",
+                getattr(config, "LABEL_SMOOTHING", 0.0))
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.CLF_LR, weight_decay=config.CLF_WEIGHT_DECAY)
     
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer,
-        max_lr=config.CLF_LR * 5,
+        max_lr=config.CLF_LR * 10,
         steps_per_epoch=len(train_loader),
         epochs=config.CLF_EPOCHS,
+        pct_start=getattr(config, "CLF_PCT_START", 0.1),
     )
+
+    patience   = getattr(config, "CLF_EARLY_STOP_PATIENCE", 15)
+    early_stop = EarlyStopping(patience=patience)
     
     best_val_f1 = 0.0
     best_state = None
@@ -148,12 +167,15 @@ def train_hybrid_classifier(config, model, X_train, X_train_emb, y_train,
     history = {
         "train_loss": [], "val_loss": [],
         "train_acc":  [], "val_acc":  [],
+        "train_f1":   [], "val_f1":   [],
     }
     
     for epoch in range(1, config.CLF_EPOCHS + 1):
         model.train()
         tr_loss = 0.0
         correct, total = 0, 0
+        all_tr_preds = []
+        all_tr_true  = []
         
         for batch in train_loader:
             tab_x = batch["tab_x"].to(device)
@@ -172,9 +194,13 @@ def train_hybrid_classifier(config, model, X_train, X_train_emb, y_train,
             preds = logits.argmax(dim=1)
             correct += (preds == y).sum().item()
             total += len(y)
+            all_tr_preds.extend(preds.cpu().numpy())
+            all_tr_true.extend(y.cpu().numpy())
             
         tr_loss /= len(train_ds)
         tr_acc  = correct / total
+        from sklearn.metrics import f1_score as _f1
+        tr_f1 = _f1(all_tr_true, all_tr_preds, average="macro", zero_division=0)
         
         # Validation
         model.eval()
@@ -211,17 +237,27 @@ def train_hybrid_classifier(config, model, X_train, X_train_emb, y_train,
         history["val_loss"].append(val_loss)
         history["train_acc"].append(tr_acc)
         history["val_acc"].append(val_acc)
+        history["train_f1"].append(tr_f1)
+        history["val_f1"].append(val_f1)
         
         if val_f1 > best_val_f1:
             best_val_f1 = val_f1
             best_state = {k: v.cpu() for k, v in model.state_dict().items()}
             
-        if epoch % 10 == 0 or epoch == 1:
+        if epoch % 5 == 0 or epoch == 1 or epoch == config.CLF_EPOCHS:
             logger.info("  [Hybrid Epoch %2d/%d] loss=%.4f val_loss=%.4f val_acc=%.4f val_f1_macro=%.4f",
                         epoch, config.CLF_EPOCHS, tr_loss, val_loss, val_acc, val_f1)
-                        
-    if best_state is not None:
+        
+        if early_stop(val_f1, model):
+            logger.info("  [Hybrid] Early stopping at epoch %d (best val_f1=%.4f)",
+                        epoch, early_stop.best_val)
+            break
+
+    # Restore best weights (EarlyStopping saves them internally)
+    early_stop.restore(model)
+    if best_state is not None and early_stop.best_state is None:
         model.load_state_dict({k: v.to(device) for k, v in best_state.items()})
+
         
     save_dir = models_dir or config.MODELS_DIR
     os.makedirs(save_dir, exist_ok=True)

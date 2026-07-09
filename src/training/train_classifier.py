@@ -87,7 +87,23 @@ def train_classifier(config, model, X_train, y_train, X_val, y_val,
     logger.info(" Classifier Training | Augmented train size: %d  (real=%d  synth=%d)",
                 len(X_aug), len(X_train), len(synth_X))
 
-    criterion = nn.CrossEntropyLoss()
+    # ── Class-weighted loss ────────────────────────────────────────────────────
+    # Compute inverse-frequency weights so Malware / Botnet classes are not
+    # ignored when Benign dominates the training set.
+    num_classes = 3
+    class_counts = np.bincount(y_aug, minlength=num_classes).astype(np.float64)
+    class_counts = np.maximum(class_counts, 1.0)           # avoid div-by-zero
+    class_weights = 1.0 / class_counts
+    class_weights = class_weights / class_weights.sum() * num_classes   # normalise
+    weight_tensor = torch.tensor(class_weights, dtype=torch.float32).to(device)
+    logger.info(" Class weights → Benign=%.3f  Botnet=%.3f  Malware=%.3f",
+                class_weights[0], class_weights[1], class_weights[2])
+
+    # Label smoothing prevents overconfident predictions (100% confidence).
+    # With smoothing=0.1, the model produces calibrated scores like 82% instead of always 100%.
+    label_smoothing = getattr(config, "LABEL_SMOOTHING", 0.0)
+    criterion = nn.CrossEntropyLoss(weight=weight_tensor, label_smoothing=label_smoothing)
+    logger.info(" CrossEntropyLoss | label_smoothing=%.2f", label_smoothing)
 
     train_ds = TensorDataset(
         torch.tensor(X_aug, dtype=torch.float32),
@@ -111,9 +127,14 @@ def train_classifier(config, model, X_train, y_train, X_val, y_val,
         max_lr=config.CLF_LR * 10,
         steps_per_epoch=len(train_loader),
         epochs=config.CLF_EPOCHS,
-        pct_start=0.3,
+        # 10% warmup: with 50 epochs that's 5 epochs, well within patience=15
+        pct_start=getattr(config, "CLF_PCT_START", 0.1),
     )
-    early_stop = EarlyStopping(patience=8)
+    # patience > warmup period so early stopping never fires mid-warmup
+    patience = getattr(config, "CLF_EARLY_STOP_PATIENCE", 15)
+    early_stop = EarlyStopping(patience=patience)
+    logger.info(" EarlyStopping patience=%d | OneCycleLR pct_start=%.2f",
+                patience, getattr(config, "CLF_PCT_START", 0.1))
 
     history = {
         "train_loss": [], "val_loss": [],
@@ -181,7 +202,7 @@ def train_classifier(config, model, X_train, y_train, X_val, y_val,
         history["train_f1"].append(tr_f1)
         history["val_f1"].append(vl_f1)
 
-        if epoch % 10 == 0 or epoch == 1:
+        if epoch % 5 == 0 or epoch == 1 or epoch == config.CLF_EPOCHS:
             logger.info(
                 "  [Epoch %2d/%d]  tr_loss=%.4f  vl_loss=%.4f  "
                 "tr_acc=%.4f  vl_acc=%.4f  vl_f1_macro=%.4f",

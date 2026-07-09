@@ -11,10 +11,8 @@ def weights_init(m):
 
 class Generator(nn.Module):
     """
-    Improved Generator with a residual skip connection from the latent
-    projection → output. This provides a direct gradient path that helps
-    the generator learn to produce samples that look like real anomalies
-    (rather than drifting to produce generic normal-looking traffic).
+    Generator with residual skip connection.
+    Same architecture as before — tanh output keeps features in [-1, 1] range.
     """
 
     def __init__(self, latent_dim: int, output_dim: int):
@@ -44,34 +42,37 @@ class Generator(nn.Module):
         self.apply(weights_init)
 
     def forward(self, z: torch.Tensor) -> torch.Tensor:
-        # Residual: direct projection + deep transformation, then squash
         return torch.tanh(self.main(z) + self.proj(z))
 
 
-class Discriminator(nn.Module):
+class Critic(nn.Module):
     """
-    Discriminator with spectral normalisation (training stability) and
-    instance-wise feature stats instead of pure dropout for better gradient
-    signal back to the Generator.
+    WGAN-GP Critic (replaces the old Discriminator).
+
+    KEY DIFFERENCE from the old Discriminator:
+    - NO Sigmoid at the end → outputs an unbounded real-valued score.
+    - This is mathematically required by Wasserstein distance.
+    - The old Sigmoid caused the discriminator to "saturate" (output exactly 0 or 1)
+      which killed generator gradients and caused mode collapse.
+    - Spectral normalisation is REMOVED (it conflicts with gradient penalty).
     """
 
-    def __init__(self, input_dim: int):
+    def __init__(self, input_dim: int, dropout: float = 0.3):
         super().__init__()
         self.model = nn.Sequential(
-
-            nn.utils.spectral_norm(nn.Linear(input_dim, 512)),
+            nn.Linear(input_dim, 512),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Dropout(0.3),
+            nn.Dropout(dropout),
 
-            nn.utils.spectral_norm(nn.Linear(512, 256)),
+            nn.Linear(512, 256),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Dropout(0.3),
+            nn.Dropout(dropout),
 
-            nn.utils.spectral_norm(nn.Linear(256, 128)),
+            nn.Linear(256, 128),
             nn.LeakyReLU(0.2, inplace=True),
 
             nn.Linear(128, 1),
-            nn.Sigmoid(),
+            # No Sigmoid — WGAN critic outputs a raw score
         )
         self.apply(weights_init)
 
@@ -79,7 +80,41 @@ class Discriminator(nn.Module):
         return self.model(x)
 
 
+def compute_gradient_penalty(critic: Critic, real: torch.Tensor,
+                              fake: torch.Tensor, device: torch.device,
+                              lambda_gp: float = 10.0) -> torch.Tensor:
+    """
+    Gradient Penalty (WGAN-GP): enforces the 1-Lipschitz constraint on the critic.
+
+    Interpolates between real and fake samples, computes critic output,
+    then penalises gradients whose L2 norm deviates from 1.
+    This replaces weight clipping (original WGAN) for more stable training.
+    """
+    batch_size = real.size(0)
+    # Random interpolation weight α ∈ [0, 1]
+    alpha = torch.rand(batch_size, 1, device=device)
+    alpha = alpha.expand_as(real)
+
+    interpolated = (alpha * real + (1 - alpha) * fake).detach().requires_grad_(True)
+    critic_interp = critic(interpolated)
+
+    gradients = torch.autograd.grad(
+        outputs=critic_interp,
+        inputs=interpolated,
+        grad_outputs=torch.ones_like(critic_interp, device=device),
+        create_graph=True,
+        retain_graph=True,
+    )[0]
+
+    # Flatten gradients and compute L2 norm per sample
+    gradients = gradients.view(batch_size, -1)
+    gradient_norm = gradients.norm(2, dim=1)
+    gp = lambda_gp * ((gradient_norm - 1) ** 2).mean()
+    return gp
+
+
 def build_gan(config, n_features: int, device: torch.device):
+    """Build and return (Generator, Critic) on the specified device."""
     G = Generator(config.LATENT_DIM, n_features).to(device)
-    D = Discriminator(n_features).to(device)
-    return G, D
+    C = Critic(n_features).to(device)
+    return G, C

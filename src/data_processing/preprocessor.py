@@ -61,6 +61,30 @@ def load_and_preprocess(config) -> dict:
     logger.info("   Attack types mapped in CSV: %s", attack_types_found)
     logger.info("   3-class distribution:\n%s", df["label_3class"].value_counts().to_string())
 
+    # ── Benign ratio cap ────────────────────────────────────────────────────────
+    # Without this, the 94:4:1 Benign:Botnet:Malware ratio in combined_dataset.csv
+    # lets the model reach 94%+ accuracy by predicting "Benign" for everything.
+    # We cap Benign to MAX_BENIGN_RATIO × the largest minority class count so the
+    # model is forced to learn actual attack patterns.
+    max_benign_ratio = getattr(config, "MAX_BENIGN_RATIO", None)
+    if max_benign_ratio is not None:
+        benign_mask    = df["label_3class"] == 0
+        minority_count = int((df["label_3class"] != 0).sum())
+        max_benign     = int(minority_count * max_benign_ratio)
+        n_benign_now   = int(benign_mask.sum())
+        if n_benign_now > max_benign:
+            benign_idx     = df[benign_mask].index
+            drop_idx       = benign_idx[max_benign:]
+            df             = df.drop(index=drop_idx).reset_index(drop=True)
+            logger.info(
+                "   Benign cap applied: %d → %d rows (ratio=%.1fx minority)",
+                n_benign_now, max_benign, max_benign_ratio
+            )
+        logger.info(
+            "   Balanced 3-class distribution:\n%s",
+            df["label_3class"].value_counts().to_string()
+        )
+
     drop_cols = [config.LABEL_COL, "binary_label", "label_3class", "attack_type", "Timestamp", "Dst Port"]
     feature_cols = [c for c in df.columns if c not in drop_cols]
 

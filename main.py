@@ -77,15 +77,31 @@ def main():
     class_names = config.CLASS_NAMES_3CLASS
     feature_names = data["feature_names"]
 
+    # ── Class balance validation ────────────────────────────────────────────────
+    # Verify that both Botnet (1) and Malware (2) appear in train AND test.
+    # With SAMPLE_SIZE=50 this check would have caught the single-class problem.
+    for split_name, y_split in [("train", data["y_train"]), ("test", data["y_test"])]:
+        unique, counts = np.unique(y_split, return_counts=True)
+        dist_str = "  ".join(f"{class_names[u]}={c}" for u, c in zip(unique, counts))
+        logger.info(" Class distribution in %s: %s", split_name, dist_str)
+        for cls_idx, cls_name in enumerate(class_names):
+            if cls_idx not in unique:
+                logger.warning(
+                    "\u26a0\ufe0f  Class '%s' (idx=%d) is MISSING from %s split! "
+                    "Model cannot learn to detect this attack type. "
+                    "Increase SAMPLE_SIZE or use combined_dataset.csv.",
+                    cls_name, cls_idx, split_name
+                )
+
     # Before GAN Class Distribution
-    before_counts = [int((data["y_train"] == 0).sum()), 
-                     int((data["y_train"] == 1).sum()), 
+    before_counts = [int((data["y_train"] == 0).sum()),
+                     int((data["y_train"] == 1).sum()),
                      int((data["y_train"] == 2).sum())]
 
     # --- Baseline Tabular Classifier (no augmentation) ---
     logger.info(" Training Baseline Tabular MLP...")
     baseline_model = build_classifier(config, data["n_features"], device)
-    train_classifier(
+    baseline_history = train_classifier(
         config, baseline_model,
         data["X_train"], data["y_train"],
         data["X_val"], data["y_val"],
@@ -95,6 +111,7 @@ def main():
         model_filename="classifier_baseline.pt",
         models_dir=config.MODELS_DIR,
     )
+    plot_training_history(baseline_history, config.MODELS_DIR)
     baseline_metrics, _, _ = _evaluate_classifier(baseline_model, data, device, config.MODELS_DIR)
 
     # --- Simple GAN branch ---
@@ -113,7 +130,7 @@ def main():
 
     logger.info(" [Simple GAN] Training augmented tabular classifier...")
     gan_model = build_classifier(config, data["n_features"], device)
-    train_classifier(
+    gan_clf_history = train_classifier(
         config, gan_model,
         data["X_train"], data["y_train"],
         data["X_val"], data["y_val"],
@@ -123,6 +140,7 @@ def main():
         model_filename="classifier_gan.pt",
         models_dir=config.SIMPLE_GAN_MODELS_DIR,
     )
+    plot_training_history(gan_clf_history, config.SIMPLE_GAN_PLOTS_DIR)
     simple_gan_metrics, _, _ = _evaluate_classifier(gan_model, data, device, config.SIMPLE_GAN_PLOTS_DIR)
 
     # --- CTGAN branch ---
@@ -141,7 +159,7 @@ def main():
 
     logger.info(" [CTGAN] Training augmented tabular classifier...")
     ctgan_model = build_classifier(config, data["n_features"], device)
-    train_classifier(
+    ctgan_clf_history = train_classifier(
         config, ctgan_model,
         data["X_train"], data["y_train"],
         data["X_val"], data["y_val"],
@@ -151,6 +169,7 @@ def main():
         model_filename="classifier_ctgan.pt",
         models_dir=config.CTGAN_MODELS_DIR,
     )
+    plot_training_history(ctgan_clf_history, config.CTGAN_PLOTS_DIR)
     ctgan_metrics, _, _ = _evaluate_classifier(ctgan_model, data, device, config.CTGAN_PLOTS_DIR)
 
     # --- DistilBERT Embeddings Extraction ---
@@ -166,12 +185,13 @@ def main():
     # --- Hybrid Multimodal Baseline ---
     logger.info(" Training Hybrid Baseline Model...")
     hybrid_baseline_model = HybridFusionClassifier(tabular_dim=data["n_features"]).to(device)
-    train_hybrid_classifier(
+    hybrid_base_history = train_hybrid_classifier(
         config, hybrid_baseline_model,
         data["X_train"], X_train_emb, data["y_train"],
         data["X_val"], X_val_emb, data["y_val"],
         device=device, model_filename="hybrid_baseline.pt"
     )
+    plot_training_history(hybrid_base_history, config.MODELS_DIR)
     y_pred_h_base = predict_hybrid(hybrid_baseline_model, data["X_test"], X_test_emb, device)
     y_prob_h_base = predict_proba_hybrid(hybrid_baseline_model, data["X_test"], X_test_emb, device)
     hybrid_base_metrics = compute_metrics(data["y_test"], y_pred_h_base, y_prob_h_base)
@@ -186,12 +206,13 @@ def main():
     y_train_aug_gan = np.concatenate([data["y_train"], gan_results["synth_y"]])
 
     hybrid_gan_model = HybridFusionClassifier(tabular_dim=data["n_features"]).to(device)
-    train_hybrid_classifier(
+    hybrid_gan_history = train_hybrid_classifier(
         config, hybrid_gan_model,
         X_train_aug_gan, X_train_emb_aug_gan, y_train_aug_gan,
         data["X_val"], X_val_emb, data["y_val"],
         device=device, model_filename="hybrid_gan.pt"
     )
+    plot_training_history(hybrid_gan_history, config.SIMPLE_GAN_PLOTS_DIR)
     y_pred_h_gan = predict_hybrid(hybrid_gan_model, data["X_test"], X_test_emb, device)
     y_prob_h_gan = predict_proba_hybrid(hybrid_gan_model, data["X_test"], X_test_emb, device)
     hybrid_gan_metrics = compute_metrics(data["y_test"], y_pred_h_gan, y_prob_h_gan)
@@ -206,12 +227,13 @@ def main():
     y_train_aug_ctgan = np.concatenate([data["y_train"], ctgan_results["synth_y"]])
 
     hybrid_ctgan_model = HybridFusionClassifier(tabular_dim=data["n_features"]).to(device)
-    train_hybrid_classifier(
+    hybrid_ctgan_history = train_hybrid_classifier(
         config, hybrid_ctgan_model,
         X_train_aug_ctgan, X_train_emb_aug_ctgan, y_train_aug_ctgan,
         data["X_val"], X_val_emb, data["y_val"],
         device=device, model_filename="hybrid_ctgan.pt"
     )
+    plot_training_history(hybrid_ctgan_history, config.CTGAN_PLOTS_DIR)
     y_pred_h_ctgan = predict_hybrid(hybrid_ctgan_model, data["X_test"], X_test_emb, device)
     y_prob_h_ctgan = predict_proba_hybrid(hybrid_ctgan_model, data["X_test"], X_test_emb, device)
     hybrid_ctgan_metrics = compute_metrics(data["y_test"], y_pred_h_ctgan, y_prob_h_ctgan)
@@ -267,7 +289,12 @@ def main():
     # Copy GAN plots from the best branch to the main plots dir
     import shutil
     best_plots_src = config.CTGAN_PLOTS_DIR if best_hybrid == "ctgan" else config.SIMPLE_GAN_PLOTS_DIR
-    for filename in ["gan_loss_curves.png", "pca_synthetic.png", "class_distribution_comparison.png"]:
+    for filename in [
+        "gan_loss_curves.png",
+        "pca_synthetic.png",
+        "class_distribution_comparison.png",
+        "classifier_training_history.png",  # Training curves (fixed: now shows 50 epochs)
+    ]:
         src_file = os.path.join(best_plots_src, filename)
         dst_file = os.path.join(config.PLOTS_DIR, filename)
         if os.path.exists(src_file):
