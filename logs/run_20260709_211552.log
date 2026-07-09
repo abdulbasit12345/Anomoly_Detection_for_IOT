@@ -1,0 +1,136 @@
+2026-07-09 21:15:52,712 [INFO] MAIN:  Starting GAN + CTGAN + DistilBERT IoT Anomaly Detection Pipeline
+2026-07-09 21:15:52,713 [INFO] MAIN:  Device: cpu | CPU threads: 2
+2026-07-09 21:15:52,713 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/combined_dataset.csv
+2026-07-09 21:16:00,437 [INFO] src.data_processing.preprocessor:    Raw shape: (1048675, 80)
+2026-07-09 21:16:01,088 [INFO] src.data_processing.preprocessor:    After stratified sampling: (4998, 80)
+2026-07-09 21:16:01,093 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet', 'Malware']
+2026-07-09 21:16:01,095 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    4749
+1     197
+2      52
+2026-07-09 21:16:01,100 [INFO] src.data_processing.preprocessor:    Benign cap applied: 4749 → 747 rows (ratio=3.0x minority)
+2026-07-09 21:16:01,101 [INFO] src.data_processing.preprocessor:    Balanced 3-class distribution:
+label_3class
+0    747
+1    197
+2     52
+2026-07-09 21:16:01,138 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-09 21:16:01,143 [INFO] src.data_processing.preprocessor:    Train=696  Val=100  Test=200
+2026-07-09 21:16:01,153 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/data/processed
+2026-07-09 21:16:01,155 [INFO] MAIN:  Class distribution in train: Benign=522  Botnet=137  Malware=37
+2026-07-09 21:16:01,155 [INFO] MAIN:  Class distribution in test: Benign=150  Botnet=40  Malware=10
+2026-07-09 21:16:01,155 [INFO] MAIN:  Training Baseline Tabular MLP...
+2026-07-09 21:16:01,161 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 696  (real=696  synth=0)
+2026-07-09 21:16:01,162 [INFO] src.training.train_classifier:  Class weights → Benign=0.159  Botnet=0.604  Malware=2.237
+2026-07-09 21:16:01,162 [INFO] src.training.train_classifier:  CrossEntropyLoss | label_smoothing=0.10
+2026-07-09 21:16:01,164 [INFO] src.training.train_classifier:  EarlyStopping patience=15 | OneCycleLR pct_start=0.10
+2026-07-09 21:16:01,256 [INFO] src.training.train_classifier:   [Epoch  1/50]  tr_loss=1.6372  vl_loss=1.2911  tr_acc=0.2557  vl_acc=0.0500  vl_f1_macro=0.0317
+2026-07-09 21:16:01,544 [INFO] src.training.train_classifier:   [Epoch  5/50]  tr_loss=0.9810  vl_loss=0.9087  tr_acc=0.4928  vl_acc=0.8900  vl_f1_macro=0.8241
+2026-07-09 21:16:01,764 [INFO] src.training.train_classifier:   [Epoch 10/50]  tr_loss=0.6892  vl_loss=0.6559  tr_acc=0.9382  vl_acc=0.9800  vl_f1_macro=0.9399
+2026-07-09 21:16:01,981 [INFO] src.training.train_classifier:   [Epoch 15/50]  tr_loss=0.6557  vl_loss=0.6405  tr_acc=0.9670  vl_acc=0.9800  vl_f1_macro=0.9399
+2026-07-09 21:16:02,202 [INFO] src.training.train_classifier:   [Epoch 20/50]  tr_loss=0.6518  vl_loss=0.6377  tr_acc=0.9770  vl_acc=0.9800  vl_f1_macro=0.9399
+2026-07-09 21:16:02,631 [INFO] src.training.train_classifier:   [Epoch 25/50]  tr_loss=0.6384  vl_loss=0.6327  tr_acc=0.9856  vl_acc=0.9900  vl_f1_macro=0.9675
+2026-07-09 21:16:02,823 [INFO] src.training.train_classifier:    Early stopping at epoch 29 (best val_f1=0.9675)
+2026-07-09 21:16:02,830 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/classifier_baseline.pt
+2026-07-09 21:16:03,307 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/classifier_training_history.png
+2026-07-09 21:16:03,325 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-09 21:16:03,325 [INFO] src.evaluation.metrics:    accuracy                                 0.9750
+2026-07-09 21:16:03,325 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9578
+2026-07-09 21:16:03,325 [INFO] src.evaluation.metrics:    precision                                0.8952
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    recall                                   0.9578
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    f1_score                                 0.9219
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      53
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    n_true_anomaly                           50
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0267
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    roc_auc                                  0.9706
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    Benign_precision                         0.9932
+2026-07-09 21:16:03,326 [INFO] src.evaluation.metrics:    Benign_recall                            0.9733
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Benign_f1                                0.9832
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Botnet_precision                         1.0000
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Botnet_f1                                1.0000
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Malware_precision                        0.6923
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Malware_recall                           0.9000
+2026-07-09 21:16:03,327 [INFO] src.evaluation.metrics:    Malware_f1                               0.7826
+2026-07-09 21:16:03,527 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/confusion_matrix.png
+2026-07-09 21:16:03,870 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/roc_pr_curves.png
+2026-07-09 21:16:04,042 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/per_class_heatmap.png
+2026-07-09 21:16:04,042 [INFO] MAIN:  [Simple GAN] Training Class Generators...
+2026-07-09 21:16:04,042 [INFO] src.training.train_gan:  Starting WGAN-GP Training. Minority classes: [1, 2]
+2026-07-09 21:16:04,042 [INFO] src.training.train_gan:  --- WGAN-GP for Class 1 | Samples: 137 | Epochs: 50 ---
+2026-07-09 21:16:04,132 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep   1/50]  G=0.1032  C=1.8367
+2026-07-09 21:16:04,784 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep  10/50]  G=0.9692  C=-2.4234
+2026-07-09 21:16:05,531 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep  20/50]  G=1.6947  C=-3.7211
+2026-07-09 21:16:06,259 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep  30/50]  G=2.1434  C=-4.1355
+2026-07-09 21:16:06,976 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep  40/50]  G=2.3743  C=-4.2627
+2026-07-09 21:16:07,699 [INFO] src.training.train_gan:   [WGAN-GP Class 1 | Ep  50/50]  G=2.2477  C=-4.2040
+2026-07-09 21:16:07,824 [INFO] src.training.train_ctgan:  CTGAN Mahalanobis filter (p95): kept 9500 / 10000 samples (95.0%)
+2026-07-09 21:16:07,826 [INFO] src.training.train_gan:  WGAN-GP Class 1: kept 9500 / 10000 synthetic samples (95.0%)
+2026-07-09 21:16:07,831 [INFO] src.training.train_gan:  --- WGAN-GP for Class 2 | Samples: 37 | Epochs: 50 ---
+2026-07-09 21:16:07,893 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep   1/50]  G=-0.2536  C=0.8677
+2026-07-09 21:16:08,249 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep  10/50]  G=-1.0678  C=-12.9023
+2026-07-09 21:16:08,644 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep  20/50]  G=-1.9286  C=-14.9255
+2026-07-09 21:16:09,070 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep  30/50]  G=-2.5151  C=-15.4792
+2026-07-09 21:16:09,479 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep  40/50]  G=-2.8677  C=-14.8712
+2026-07-09 21:16:09,874 [INFO] src.training.train_gan:   [WGAN-GP Class 2 | Ep  50/50]  G=-3.1676  C=-15.3857
+2026-07-09 21:16:09,993 [INFO] src.training.train_ctgan:  CTGAN Mahalanobis filter (p95): kept 9500 / 10000 samples (95.0%)
+2026-07-09 21:16:09,995 [INFO] src.training.train_gan:  WGAN-GP Class 2: kept 9500 / 10000 synthetic samples (95.0%)
+2026-07-09 21:16:10,002 [INFO] src.training.train_gan:  WGAN-GP training complete. Total synthetic: 19000 samples
+2026-07-09 21:16:10,263 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/gan_loss_curves.png
+2026-07-09 21:16:10,638 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/pca_synthetic.png
+2026-07-09 21:16:10,793 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/class_distribution_comparison.png
+2026-07-09 21:16:10,793 [INFO] MAIN:  [Simple GAN] Training augmented tabular classifier...
+2026-07-09 21:16:10,805 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 19696  (real=696  synth=19000)
+2026-07-09 21:16:10,806 [INFO] src.training.train_classifier:  Class weights → Benign=2.705  Botnet=0.147  Malware=0.148
+2026-07-09 21:16:10,806 [INFO] src.training.train_classifier:  CrossEntropyLoss | label_smoothing=0.10
+2026-07-09 21:16:10,808 [INFO] src.training.train_classifier:  EarlyStopping patience=15 | OneCycleLR pct_start=0.10
+2026-07-09 21:16:11,735 [INFO] src.training.train_classifier:   [Epoch  1/50]  tr_loss=1.4142  vl_loss=0.3319  tr_acc=0.2205  vl_acc=0.8400  vl_f1_macro=0.7624
+2026-07-09 21:16:15,581 [INFO] src.training.train_classifier:   [Epoch  5/50]  tr_loss=0.8413  vl_loss=0.0563  tr_acc=0.9727  vl_acc=0.9900  vl_f1_macro=0.9608
+2026-07-09 21:16:20,183 [INFO] src.training.train_classifier:   [Epoch 10/50]  tr_loss=0.8317  vl_loss=0.0515  tr_acc=0.9903  vl_acc=0.9900  vl_f1_macro=0.9608
+2026-07-09 21:16:24,790 [INFO] src.training.train_classifier:   [Epoch 15/50]  tr_loss=0.8283  vl_loss=0.0520  tr_acc=0.9958  vl_acc=0.9900  vl_f1_macro=0.9608
+2026-07-09 21:16:27,864 [INFO] src.training.train_classifier:    Early stopping at epoch 18 (best val_f1=0.9608)
+2026-07-09 21:16:27,869 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/models/classifier_gan.pt
+2026-07-09 21:16:28,345 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/classifier_training_history.png
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    accuracy                                 0.9550
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.8061
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    precision                                0.9275
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    recall                                   0.8061
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    f1_score                                 0.8522
+2026-07-09 21:16:28,362 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      43
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    n_true_anomaly                           50
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0067
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    roc_auc                                  0.9773
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Benign_precision                         0.9490
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Benign_recall                            0.9933
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Benign_f1                                0.9707
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Botnet_precision                         1.0000
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9250
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9610
+2026-07-09 21:16:28,363 [INFO] src.evaluation.metrics:    Malware_precision                        0.8333
+2026-07-09 21:16:28,364 [INFO] src.evaluation.metrics:    Malware_recall                           0.5000
+2026-07-09 21:16:28,364 [INFO] src.evaluation.metrics:    Malware_f1                               0.6250
+2026-07-09 21:16:28,551 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/confusion_matrix.png
+2026-07-09 21:16:28,885 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/roc_pr_curves.png
+2026-07-09 21:16:29,040 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/per_class_heatmap.png
+2026-07-09 21:16:29,040 [INFO] MAIN:  [CTGAN] Training Class Generators...
+2026-07-09 21:16:29,040 [WARNING] src.training.train_ctgan:  External ctgan package unavailable (No module named 'ctgan'). Falling back to internal WGAN-GP for CTGAN branch.
+2026-07-09 21:16:29,041 [ERROR] MAIN:  Pipeline failed: name '_train_ctgan_internal' is not defined
+Traceback (most recent call last):
+  File "/Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/src/training/train_ctgan.py", line 67, in train_ctgan
+    from ctgan import CTGAN as _CTGAN
+ModuleNotFoundError: No module named 'ctgan'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/main.py", line 330, in <module>
+    main()
+  File "/Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/main.py", line 148, in main
+    ctgan_results = train_ctgan(config, data["X_train"], data["y_train"], data["feature_names"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/src/training/train_ctgan.py", line 74, in train_ctgan
+    return _train_ctgan_internal(config, X_train, y_train)
+           ^^^^^^^^^^^^^^^^^^^^^
+NameError: name '_train_ctgan_internal' is not defined. Did you mean: '_train_ctgan_external'?
