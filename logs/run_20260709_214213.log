@@ -220,3 +220,103 @@ label_3class
 2026-07-09 21:45:04,769 [INFO] src.models.hybrid_model:  Extracting embeddings for 19000 sequences...
 2026-07-09 21:53:54,945 [INFO] src.models.hybrid_model:    Extracted: 6400/19000
 2026-07-09 22:01:07,654 [INFO] src.models.hybrid_model:    Extracted: 12800/19000
+2026-07-09 22:07:38,038 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-09 22:07:38,081 [INFO] src.models.hybrid_model:  Hybrid class weights → Benign=2.705  Botnet=0.147  Malware=0.148
+2026-07-09 22:07:38,081 [INFO] src.models.hybrid_model:  Hybrid CrossEntropyLoss | label_smoothing=0.10
+2026-07-09 22:07:39,752 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/50] loss=1.2869 val_loss=0.0904 val_acc=0.9200 val_f1_macro=0.8754
+2026-07-09 22:07:46,106 [INFO] src.models.hybrid_model:   [Hybrid Epoch  5/50] loss=0.8311 val_loss=0.0539 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:07:52,543 [INFO] src.models.hybrid_model:   [Hybrid Epoch 10/50] loss=0.8217 val_loss=0.0499 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:07:58,026 [INFO] src.models.hybrid_model:   [Hybrid Epoch 15/50] loss=0.8227 val_loss=0.0500 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:08:03,029 [INFO] src.models.hybrid_model:   [Hybrid Epoch 20/50] loss=0.8267 val_loss=0.0475 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:08:03,029 [INFO] src.models.hybrid_model:   [Hybrid] Early stopping at epoch 20 (best val_f1=0.9608)
+2026-07-09 22:08:03,038 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.9608) to: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/hybrid_gan.pt
+2026-07-09 22:08:03,752 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/classifier_training_history.png
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    accuracy                                 0.9750
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.8583
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    precision                                0.9892
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    recall                                   0.8583
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    f1_score                                 0.9070
+2026-07-09 22:08:03,772 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      45
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    n_true_anomaly                           50
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0000
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    roc_auc                                  0.9519
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Benign_precision                         0.9677
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Benign_recall                            1.0000
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Benign_f1                                0.9836
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Botnet_precision                         1.0000
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9750
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9873
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Malware_precision                        1.0000
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Malware_recall                           0.6000
+2026-07-09 22:08:03,773 [INFO] src.evaluation.metrics:    Malware_f1                               0.7500
+2026-07-09 22:08:03,773 [INFO] MAIN:  Training Hybrid CTGAN Augmented Model...
+2026-07-09 22:08:04,334 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-09 22:08:05,548 [INFO] src.models.hybrid_model:  Extracting embeddings for 19000 sequences...
+2026-07-09 22:15:00,147 [INFO] src.models.hybrid_model:    Extracted: 6400/19000
+2026-07-09 22:21:48,726 [INFO] src.models.hybrid_model:    Extracted: 12800/19000
+2026-07-09 22:28:42,108 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-09 22:28:42,153 [INFO] src.models.hybrid_model:  Hybrid class weights → Benign=2.705  Botnet=0.147  Malware=0.148
+2026-07-09 22:28:42,154 [INFO] src.models.hybrid_model:  Hybrid CrossEntropyLoss | label_smoothing=0.10
+2026-07-09 22:28:44,522 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/50] loss=1.1989 val_loss=0.0843 val_acc=0.9200 val_f1_macro=0.8754
+2026-07-09 22:28:51,673 [INFO] src.models.hybrid_model:   [Hybrid Epoch  5/50] loss=0.8278 val_loss=0.0516 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:29:00,036 [INFO] src.models.hybrid_model:   [Hybrid Epoch 10/50] loss=0.8275 val_loss=0.0511 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:29:09,839 [INFO] src.models.hybrid_model:   [Hybrid Epoch 15/50] loss=0.8243 val_loss=0.0487 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:29:22,121 [INFO] src.models.hybrid_model:   [Hybrid Epoch 20/50] loss=0.8196 val_loss=0.0477 val_acc=0.9900 val_f1_macro=0.9608
+2026-07-09 22:29:22,121 [INFO] src.models.hybrid_model:   [Hybrid] Early stopping at epoch 20 (best val_f1=0.9608)
+2026-07-09 22:29:22,143 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.9608) to: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/models/hybrid_ctgan.pt
+2026-07-09 22:29:23,902 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/ctgan/plots/classifier_training_history.png
+2026-07-09 22:29:23,969 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-09 22:29:23,969 [INFO] src.evaluation.metrics:    accuracy                                 0.9750
+2026-07-09 22:29:23,970 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.8583
+2026-07-09 22:29:23,970 [INFO] src.evaluation.metrics:    precision                                0.9892
+2026-07-09 22:29:23,970 [INFO] src.evaluation.metrics:    recall                                   0.8583
+2026-07-09 22:29:23,970 [INFO] src.evaluation.metrics:    f1_score                                 0.9070
+2026-07-09 22:29:23,970 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      45
+2026-07-09 22:29:23,971 [INFO] src.evaluation.metrics:    n_true_anomaly                           50
+2026-07-09 22:29:23,971 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0000
+2026-07-09 22:29:23,971 [INFO] src.evaluation.metrics:    roc_auc                                  0.9791
+2026-07-09 22:29:23,971 [INFO] src.evaluation.metrics:    Benign_precision                         0.9677
+2026-07-09 22:29:23,972 [INFO] src.evaluation.metrics:    Benign_recall                            1.0000
+2026-07-09 22:29:23,972 [INFO] src.evaluation.metrics:    Benign_f1                                0.9836
+2026-07-09 22:29:23,973 [INFO] src.evaluation.metrics:    Botnet_precision                         1.0000
+2026-07-09 22:29:23,974 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9750
+2026-07-09 22:29:23,975 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9873
+2026-07-09 22:29:23,975 [INFO] src.evaluation.metrics:    Malware_precision                        1.0000
+2026-07-09 22:29:23,976 [INFO] src.evaluation.metrics:    Malware_recall                           0.6000
+2026-07-09 22:29:23,976 [INFO] src.evaluation.metrics:    Malware_f1                               0.7500
+2026-07-09 22:29:23,996 [INFO] src.evaluation.metrics: 
+ Model Comparison Table:
+                               Accuracy Balanced Accuracy Precision  Recall F1 Score Roc Auc
+Model                                                                                       
+Tabular Baseline (MLP)           0.9700            0.9556    0.8728  0.9556   0.9069  0.9988
+Tabular Simple GAN + MLP         0.9750            0.8583    0.9892  0.8583   0.9070  0.9748
+Tabular CTGAN + MLP              0.9650            0.8417    0.9851  0.8417   0.8961  0.9426
+Hybrid Baseline                  0.9850            0.9561    0.9623  0.9561   0.9591  0.9974
+Hybrid Simple GAN + DistilBERT   0.9750            0.8583    0.9892  0.8583   0.9070  0.9519
+Hybrid CTGAN + DistilBERT        0.9750            0.8583    0.9892  0.8583   0.9070  0.9791
+2026-07-09 22:29:25,163 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/reports/comparison/metric_comparison.png
+2026-07-09 22:29:26,275 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/plots/metric_comparison.png
+2026-07-09 22:29:26,277 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/threshold_sweep.png
+2026-07-09 22:29:26,277 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/attack_type_breakdown.png
+2026-07-09 22:29:26,290 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/simple_gan/plots/metric_comparison.png
+2026-07-09 22:29:26,296 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/ctgan/plots/threshold_sweep.png
+2026-07-09 22:29:26,297 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/ctgan/plots/attack_type_breakdown.png
+2026-07-09 22:29:26,306 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/ctgan/plots/metric_comparison.png
+2026-07-09 22:29:26,321 [INFO] src.evaluation.visualizer:  GAN vs CTGAN comparison report: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-09 22:29:26,332 [INFO] src.evaluation.visualizer:  GAN vs CTGAN JSON saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/reports/comparison/gan_vs_ctgan_metrics.json
+2026-07-09 22:29:26,333 [INFO] MAIN:  Best performing Hybrid model: base (F1=0.9591)
+2026-07-09 22:29:26,976 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/plots/confusion_matrix.png
+2026-07-09 22:29:28,259 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/plots/roc_pr_curves.png
+2026-07-09 22:29:28,776 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/plots/per_class_heatmap.png
+2026-07-09 22:29:28,788 [INFO] MAIN:  Computing attack-type detection breakdown...
+2026-07-09 22:29:28,788 [INFO] src.evaluation.metrics:    [Attack] Botnet                     39/40 detected  (97.5%)
+2026-07-09 22:29:28,789 [INFO] src.evaluation.metrics:    [Attack] Malware                    9/10 detected  (90.0%)
+2026-07-09 22:29:28,789 [INFO] src.evaluation.metrics:  Attack Summary: 48/50 detected (96.0%) | FP: 1/150 benign (0.7%)
+2026-07-09 22:29:29,307 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/plots/attack_type_breakdown.png
+2026-07-09 22:29:29,307 [INFO] MAIN:  Initializing Local Hybrid DistilBERT Explainer...
+2026-07-09 22:29:29,308 [INFO] src.explainability.hybrid_explainer:  Generating Hybrid DistilBERT-based explanations for 6 samples...
+2026-07-09 22:29:29,333 [INFO] src.evaluation.visualizer:  HTML Report saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/reports/explanation_report.html
+2026-07-09 22:29:29,345 [INFO] src.evaluation.visualizer:  JSON Results saved: /Users/apple/Documents/GitHub/Anomoly_Detection_for_IOT/results/reports/results.json
+2026-07-09 22:29:29,346 [INFO] MAIN:  Pipeline complete!
+2026-07-09 22:29:29,346 [INFO] MAIN:  Reports generated in results/reports/
