@@ -1,0 +1,299 @@
+2026-07-05 11:54:57,190 [INFO] MAIN:  Starting GAN + CTGAN + BERT IoT Anomaly Detection
+2026-07-05 11:54:57,190 [INFO] MAIN:  Device: cpu | CPU threads: 2
+2026-07-05 11:54:57,190 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-05 11:55:07,751 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-07-05 11:55:09,556 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199999, 80)
+2026-07-05 11:55:09,884 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet', 'Malware']
+2026-07-05 11:55:09,888 [INFO] src.data_processing.preprocessor:    Label distribution:
+binary_label
+0    189986
+1     10013
+2026-07-05 11:55:10,303 [INFO] src.data_processing.preprocessor:    Features after cleaning: 78
+2026-07-05 11:55:10,809 [INFO] src.data_processing.preprocessor:    Train=139999  Val=20000  Test=40000
+2026-07-05 11:55:11,189 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed
+2026-07-05 11:55:11,228 [INFO] MAIN:  Training Baseline Classifier...
+2026-07-05 11:55:11,284 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 139999  (real=139999  synth=0)
+2026-07-05 11:55:22,548 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.0695  vl_loss=0.0516  tr_acc=0.0501  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 11:56:00,102 [INFO] src.training.train_classifier:   [Epoch  5/60]  tr_loss=0.0423  vl_loss=0.0421  tr_acc=0.0501  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 11:56:40,697 [INFO] src.training.train_classifier:    Early stopping at epoch 9 (best val_f1=0.0953)
+2026-07-05 11:56:40,708 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/classifier_baseline.pt
+2026-07-05 11:56:41,224 [INFO] src.evaluation.metrics:  base_Metrics:
+2026-07-05 11:56:41,224 [INFO] src.evaluation.metrics:    base_accuracy                            0.0501
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_balanced_accuracy                   0.5000
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_precision                           0.0501
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_recall                              1.0000
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_f1_score                            0.0954
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_n_predicted_anomaly                 40000
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_n_true_anomaly                      2003
+2026-07-05 11:56:41,225 [INFO] src.evaluation.metrics:    base_false_positive_rate                 1.0000
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_roc_auc                             0.9558
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_pr_auc                              0.3672
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Benign_precision                    0.0000
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Benign_recall                       0.0000
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Benign_f1                           0.0000
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Anomaly_precision                   0.0501
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Anomaly_recall                      1.0000
+2026-07-05 11:56:41,226 [INFO] src.evaluation.metrics:    base_Anomaly_f1                          0.0954
+2026-07-05 11:56:41,226 [INFO] MAIN:  [Simple GAN] Training...
+2026-07-05 11:56:41,239 [INFO] src.training.train_gan:  GAN Training | Anomaly samples: 7009 | Epochs: 300
+2026-07-05 11:56:42,122 [INFO] src.training.train_gan:   [Epoch   1/300]  G_loss=0.6740  D_loss=0.6378
+2026-07-05 11:57:04,696 [INFO] src.training.train_gan:   [Epoch  20/300]  G_loss=1.9562  D_loss=0.1713
+2026-07-05 11:57:29,533 [INFO] src.training.train_gan:   [Epoch  40/300]  G_loss=2.4848  D_loss=0.0988
+2026-07-05 11:57:53,803 [INFO] src.training.train_gan:   [Epoch  60/300]  G_loss=2.9134  D_loss=0.0654
+2026-07-05 11:58:20,572 [INFO] src.training.train_gan:   [Epoch  80/300]  G_loss=3.1594  D_loss=0.0491
+2026-07-05 11:58:44,386 [INFO] src.training.train_gan:   [Epoch 100/300]  G_loss=3.4662  D_loss=0.0376
+2026-07-05 11:59:11,597 [INFO] src.training.train_gan:   [Epoch 120/300]  G_loss=3.7010  D_loss=0.0282
+2026-07-05 11:59:38,861 [INFO] src.training.train_gan:   [Epoch 140/300]  G_loss=3.9120  D_loss=0.0229
+2026-07-05 12:00:18,829 [INFO] src.training.train_gan:   [Epoch 160/300]  G_loss=4.0531  D_loss=0.0197
+2026-07-05 12:00:48,207 [INFO] src.training.train_gan:   [Epoch 180/300]  G_loss=4.1789  D_loss=0.0178
+2026-07-05 12:01:32,750 [INFO] src.training.train_gan:   [Epoch 200/300]  G_loss=4.3198  D_loss=0.0154
+2026-07-05 12:02:03,853 [INFO] src.training.train_gan:   [Epoch 220/300]  G_loss=4.4165  D_loss=0.0138
+2026-07-05 12:02:42,618 [INFO] src.training.train_gan:   [Epoch 240/300]  G_loss=4.4418  D_loss=0.0132
+2026-07-05 12:03:07,305 [INFO] src.training.train_gan:   [Epoch 260/300]  G_loss=4.4726  D_loss=0.0129
+2026-07-05 12:03:36,497 [INFO] src.training.train_gan:   [Epoch 280/300]  G_loss=4.4944  D_loss=0.0122
+2026-07-05 12:04:03,784 [INFO] src.training.train_gan:   [Epoch 300/300]  G_loss=4.5243  D_loss=0.0126
+2026-07-05 12:04:03,954 [INFO] src.training.train_gan:  GAN anti-evasion filter (D-score >= 0.55): kept 0 / 10000 samples (0.0%)
+2026-07-05 12:04:03,955 [WARNING] src.training.train_gan:  Anti-evasion filter removed ALL samples! Falling back to top-50%% by D-score.
+2026-07-05 12:04:04,034 [INFO] src.training.train_gan:  Fallback kept 5000 samples.
+2026-07-05 12:04:04,034 [INFO] src.training.train_gan:  GAN done. Final synthetic anomaly samples: 5000
+2026-07-05 12:04:04,431 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/gan_loss_curves.png
+2026-07-05 12:04:04,431 [INFO] MAIN:  [Simple GAN] Training augmented classifier...
+2026-07-05 12:04:04,527 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 144999  (real=139999  synth=5000)
+2026-07-05 12:04:16,828 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.0566  vl_loss=0.0437  tr_acc=0.0828  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 12:05:10,450 [INFO] src.training.train_classifier:   [Epoch  5/60]  tr_loss=0.0415  vl_loss=0.0421  tr_acc=0.0828  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 12:05:57,861 [INFO] src.training.train_classifier:    Early stopping at epoch 9 (best val_f1=0.0953)
+2026-07-05 12:05:57,873 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/models/classifier_gan.pt
+2026-07-05 12:05:58,575 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/classifier_training_history.png
+2026-07-05 12:05:58,576 [INFO] MAIN:  [Simple GAN] Sweeping decision threshold on validation set...
+2026-07-05 12:05:59,141 [INFO] src.training.train_classifier:  Optimal threshold (metric=accuracy): 0.580  (score=0.9592)
+2026-07-05 12:05:59,141 [INFO] src.training.train_classifier:    At threshold 0.580 → predicted anomaly: 934 / 20000 samples  (4.7%)
+2026-07-05 12:05:59,142 [INFO] MAIN:  [Simple GAN] Evaluating (threshold=0.580)...
+2026-07-05 12:05:59,732 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-05 12:05:59,732 [INFO] src.evaluation.metrics:    accuracy                                 0.9956
+2026-07-05 12:05:59,732 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9639
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    precision                                0.9820
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    recall                                   0.9286
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    f1_score                                 0.9546
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      1894
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0038
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    roc_auc                                  0.9985
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    pr_auc                                   0.9836
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    Benign_precision                         0.9962
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    Benign_recall                            0.9991
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    Benign_f1                                0.9977
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    Anomaly_precision                        0.9820
+2026-07-05 12:05:59,733 [INFO] src.evaluation.metrics:    Anomaly_recall                           0.9286
+2026-07-05 12:05:59,734 [INFO] src.evaluation.metrics:    Anomaly_f1                               0.9546
+2026-07-05 12:05:59,989 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/confusion_matrix.png
+2026-07-05 12:06:00,518 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/roc_pr_curves.png
+2026-07-05 12:06:00,732 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/per_class_heatmap.png
+2026-07-05 12:06:00,732 [INFO] MAIN:  [CTGAN] Training...
+2026-07-05 12:06:01,162 [INFO] src.training.train_ctgan:  CTGAN Training | Anomaly samples: 7009 | Epochs: 200 | Batch: 500
+2026-07-05 12:06:02,010 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Dst Port. Extra column not created.
+2026-07-05 12:06:02,198 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Protocol. Extra column not created.
+2026-07-05 12:06:02,232 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Duration. Extra column not created.
+2026-07-05 12:06:02,786 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Fwd Pkts. Extra column not created.
+2026-07-05 12:06:03,059 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Bwd Pkts. Extra column not created.
+2026-07-05 12:06:03,103 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Fwd Pkts. Extra column not created.
+2026-07-05 12:06:03,631 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Bwd Pkts. Extra column not created.
+2026-07-05 12:06:03,738 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Max. Extra column not created.
+2026-07-05 12:06:04,278 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Min. Extra column not created.
+2026-07-05 12:06:04,320 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Mean. Extra column not created.
+2026-07-05 12:06:04,857 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Std. Extra column not created.
+2026-07-05 12:06:05,397 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Max. Extra column not created.
+2026-07-05 12:06:05,430 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Min. Extra column not created.
+2026-07-05 12:06:05,457 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Mean. Extra column not created.
+2026-07-05 12:06:05,534 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Std. Extra column not created.
+2026-07-05 12:06:05,604 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Byts/s. Extra column not created.
+2026-07-05 12:06:05,890 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Pkts/s. Extra column not created.
+2026-07-05 12:06:06,210 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Mean. Extra column not created.
+2026-07-05 12:06:06,767 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Std. Extra column not created.
+2026-07-05 12:06:07,030 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Max. Extra column not created.
+2026-07-05 12:06:07,576 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Min. Extra column not created.
+2026-07-05 12:06:07,894 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Tot. Extra column not created.
+2026-07-05 12:06:08,486 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Mean. Extra column not created.
+2026-07-05 12:06:09,111 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Std. Extra column not created.
+2026-07-05 12:06:09,432 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Max. Extra column not created.
+2026-07-05 12:06:09,682 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Min. Extra column not created.
+2026-07-05 12:06:10,192 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Tot. Extra column not created.
+2026-07-05 12:06:10,321 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Mean. Extra column not created.
+2026-07-05 12:06:10,777 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Std. Extra column not created.
+2026-07-05 12:06:11,022 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Max. Extra column not created.
+2026-07-05 12:06:11,326 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Min. Extra column not created.
+2026-07-05 12:06:11,403 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd PSH Flags. Extra column not created.
+2026-07-05 12:06:11,438 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd PSH Flags. Extra column not created.
+2026-07-05 12:06:11,487 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd URG Flags. Extra column not created.
+2026-07-05 12:06:11,522 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd URG Flags. Extra column not created.
+2026-07-05 12:06:11,554 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Header Len. Extra column not created.
+2026-07-05 12:06:11,915 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Header Len. Extra column not created.
+2026-07-05 12:06:12,159 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/s. Extra column not created.
+2026-07-05 12:06:12,386 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/s. Extra column not created.
+2026-07-05 12:06:12,661 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Min. Extra column not created.
+2026-07-05 12:06:12,697 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Max. Extra column not created.
+2026-07-05 12:06:13,246 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Mean. Extra column not created.
+2026-07-05 12:06:13,972 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Std. Extra column not created.
+2026-07-05 12:06:14,739 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Var. Extra column not created.
+2026-07-05 12:06:15,503 [INFO] rdt.transformers.null: Guidance: There are no missing values in column FIN Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,546 [INFO] rdt.transformers.null: Guidance: There are no missing values in column SYN Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,592 [INFO] rdt.transformers.null: Guidance: There are no missing values in column RST Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,640 [INFO] rdt.transformers.null: Guidance: There are no missing values in column PSH Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,683 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ACK Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,725 [INFO] rdt.transformers.null: Guidance: There are no missing values in column URG Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,766 [INFO] rdt.transformers.null: Guidance: There are no missing values in column CWE Flag Count. Extra column not created.
+2026-07-05 12:06:15,807 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ECE Flag Cnt. Extra column not created.
+2026-07-05 12:06:15,850 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Down/Up Ratio. Extra column not created.
+2026-07-05 12:06:15,900 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Size Avg. Extra column not created.
+2026-07-05 12:06:16,740 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Avg. Extra column not created.
+2026-07-05 12:06:17,553 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Seg Size Avg. Extra column not created.
+2026-07-05 12:06:17,677 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Byts/b Avg. Extra column not created.
+2026-07-05 12:06:17,730 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/b Avg. Extra column not created.
+2026-07-05 12:06:17,776 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Blk Rate Avg. Extra column not created.
+2026-07-05 12:06:17,823 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Byts/b Avg. Extra column not created.
+2026-07-05 12:06:17,875 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/b Avg. Extra column not created.
+2026-07-05 12:06:17,922 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Blk Rate Avg. Extra column not created.
+2026-07-05 12:06:17,975 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Pkts. Extra column not created.
+2026-07-05 12:06:18,422 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Byts. Extra column not created.
+2026-07-05 12:06:19,322 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Pkts. Extra column not created.
+2026-07-05 12:06:19,404 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Byts. Extra column not created.
+2026-07-05 12:06:19,572 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Fwd Win Byts. Extra column not created.
+2026-07-05 12:06:19,685 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Bwd Win Byts. Extra column not created.
+2026-07-05 12:06:19,810 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Act Data Pkts. Extra column not created.
+2026-07-05 12:06:20,045 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Min. Extra column not created.
+2026-07-05 12:06:20,099 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Mean. Extra column not created.
+2026-07-05 12:06:20,945 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Std. Extra column not created.
+2026-07-05 12:06:21,641 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Max. Extra column not created.
+2026-07-05 12:06:22,084 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Min. Extra column not created.
+2026-07-05 12:06:22,397 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Mean. Extra column not created.
+2026-07-05 12:06:23,407 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Std. Extra column not created.
+2026-07-05 12:06:23,962 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Max. Extra column not created.
+2026-07-05 12:06:24,978 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Min. Extra column not created.
+2026-07-05 12:36:16,989 [INFO] src.training.train_ctgan:  CTGAN Mahalanobis filter (p95): kept 9500 / 10000 samples (95.0%)
+2026-07-05 12:36:16,991 [INFO] src.training.train_ctgan:  CTGAN done. Final synthetic anomaly samples: 9500
+2026-07-05 12:36:17,123 [INFO] src.training.train_ctgan:  CTGAN model saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/models/ctgan_model.pkl
+2026-07-05 12:36:17,369 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/gan_loss_curves.png
+2026-07-05 12:36:17,369 [INFO] MAIN:  [CTGAN] Training augmented classifier...
+2026-07-05 12:36:17,446 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 149499  (real=139999  synth=9500)
+2026-07-05 12:36:27,585 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.0574  vl_loss=0.0442  tr_acc=0.1104  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 12:37:11,055 [INFO] src.training.train_classifier:   [Epoch  5/60]  tr_loss=0.0407  vl_loss=0.0421  tr_acc=0.1104  vl_acc=0.0500  vl_f1=0.0953
+2026-07-05 12:37:53,329 [INFO] src.training.train_classifier:    Early stopping at epoch 9 (best val_f1=0.0953)
+2026-07-05 12:37:53,337 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/models/classifier_ctgan.pt
+2026-07-05 12:37:54,024 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/classifier_training_history.png
+2026-07-05 12:37:54,024 [INFO] MAIN:  [CTGAN] Sweeping decision threshold on validation set...
+2026-07-05 12:37:54,548 [INFO] src.training.train_classifier:  Optimal threshold (metric=accuracy): 0.690  (score=0.9650)
+2026-07-05 12:37:54,548 [INFO] src.training.train_classifier:    At threshold 0.690 → predicted anomaly: 943 / 20000 samples  (4.7%)
+2026-07-05 12:37:54,549 [INFO] MAIN:  [CTGAN] Evaluating (threshold=0.690)...
+2026-07-05 12:37:55,159 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-05 12:37:55,159 [INFO] src.evaluation.metrics:    accuracy                                 0.9965
+2026-07-05 12:37:55,159 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9684
+2026-07-05 12:37:55,159 [INFO] src.evaluation.metrics:    precision                                0.9931
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    recall                                   0.9371
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    f1_score                                 0.9643
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      1890
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0033
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    roc_auc                                  0.9984
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    pr_auc                                   0.9851
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Benign_precision                         0.9967
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Benign_recall                            0.9997
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Benign_f1                                0.9982
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Anomaly_precision                        0.9931
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Anomaly_recall                           0.9371
+2026-07-05 12:37:55,160 [INFO] src.evaluation.metrics:    Anomaly_f1                               0.9643
+2026-07-05 12:37:55,392 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/confusion_matrix.png
+2026-07-05 12:37:55,857 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/roc_pr_curves.png
+2026-07-05 12:37:56,051 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/per_class_heatmap.png
+2026-07-05 12:37:56,060 [INFO] src.evaluation.metrics: 
+ Model Comparison Table:
+                 Accuracy Balanced Accuracy Precision  Recall F1 Score Roc Auc  Pr Auc
+Model                                                                                 
+Baseline (MLP)     0.0501            0.5000    0.0501  1.0000   0.0954  0.9558  0.3672
+Simple GAN + MLP   0.9956            0.9639    0.9820  0.9286   0.9546  0.9985  0.9836
+CTGAN + MLP        0.9965            0.9684    0.9931  0.9371   0.9643  0.9984  0.9851
+2026-07-05 12:37:56,354 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/metric_comparison.png
+2026-07-05 12:37:56,355 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/threshold_sweep.png
+2026-07-05 12:37:56,356 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/attack_type_breakdown.png
+2026-07-05 12:37:56,364 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/metric_comparison.png
+2026-07-05 12:37:56,366 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/threshold_sweep.png
+2026-07-05 12:37:56,367 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/attack_type_breakdown.png
+2026-07-05 12:37:56,369 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/metric_comparison.png
+2026-07-05 12:37:56,373 [INFO] src.evaluation.visualizer:  GAN vs CTGAN comparison report: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-05 12:37:56,380 [INFO] src.evaluation.visualizer:  GAN vs CTGAN JSON saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/gan_vs_ctgan_metrics.json
+2026-07-05 12:37:56,380 [INFO] MAIN:  Using CTGAN-augmented classifier for LLM explanations (higher accuracy).
+2026-07-05 12:37:56,641 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/threshold_sweep.png
+2026-07-05 12:37:56,641 [INFO] MAIN:  Computing attack-type detection breakdown...
+2026-07-05 12:37:56,642 [INFO] src.evaluation.metrics:    [Attack] Botnet                     1571/1586 detected  (99.1%)
+2026-07-05 12:37:56,643 [INFO] src.evaluation.metrics:    [Attack] Malware                    306/417 detected  (73.4%)
+2026-07-05 12:37:56,644 [INFO] src.evaluation.metrics:  Attack Summary: 1877/2003 detected (93.7%) | FP: 13/37997 benign (0.0%)
+2026-07-05 12:37:56,846 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/attack_type_breakdown.png
+2026-07-05 12:37:57,127 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/metric_comparison.png
+2026-07-05 12:37:57,127 [INFO] MAIN:  Initializing OpenAI LLM Explainer...
+2026-07-05 12:37:57,247 [INFO] src.explainability.llm_explainer: OpenAI Explainer initialized successfully using model: gpt-4o-mini
+2026-07-05 12:37:57,248 [INFO] src.explainability.llm_explainer: Generating OpenAI explanations for 10 test samples...
+2026-07-05 12:37:59,420 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:37:59,422 [INFO] openai._base_client: Retrying request to /chat/completions in 0.391952 seconds
+2026-07-05 12:38:00,264 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:00,265 [INFO] openai._base_client: Retrying request to /chat/completions in 0.784002 seconds
+2026-07-05 12:38:01,449 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:01,455 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:01,729 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:01,730 [INFO] openai._base_client: Retrying request to /chat/completions in 0.407385 seconds
+2026-07-05 12:38:02,594 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:02,596 [INFO] openai._base_client: Retrying request to /chat/completions in 0.820372 seconds
+2026-07-05 12:38:03,690 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:03,692 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:03,963 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:03,964 [INFO] openai._base_client: Retrying request to /chat/completions in 0.464032 seconds
+2026-07-05 12:38:04,715 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:04,716 [INFO] openai._base_client: Retrying request to /chat/completions in 0.838114 seconds
+2026-07-05 12:38:05,850 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:05,851 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:06,126 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:06,127 [INFO] openai._base_client: Retrying request to /chat/completions in 0.477202 seconds
+2026-07-05 12:38:06,888 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:06,888 [INFO] openai._base_client: Retrying request to /chat/completions in 0.938404 seconds
+2026-07-05 12:38:08,101 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:08,102 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:08,553 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:08,554 [INFO] openai._base_client: Retrying request to /chat/completions in 0.436125 seconds
+2026-07-05 12:38:09,270 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:09,271 [INFO] openai._base_client: Retrying request to /chat/completions in 0.987939 seconds
+2026-07-05 12:38:10,530 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:10,532 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:10,809 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:10,810 [INFO] openai._base_client: Retrying request to /chat/completions in 0.404498 seconds
+2026-07-05 12:38:11,503 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:11,504 [INFO] openai._base_client: Retrying request to /chat/completions in 0.874057 seconds
+2026-07-05 12:38:12,661 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:12,663 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:12,937 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:12,938 [INFO] openai._base_client: Retrying request to /chat/completions in 0.447805 seconds
+2026-07-05 12:38:13,662 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:13,663 [INFO] openai._base_client: Retrying request to /chat/completions in 0.778487 seconds
+2026-07-05 12:38:14,734 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:14,735 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:15,004 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:15,006 [INFO] openai._base_client: Retrying request to /chat/completions in 0.424177 seconds
+2026-07-05 12:38:15,714 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:15,715 [INFO] openai._base_client: Retrying request to /chat/completions in 0.797152 seconds
+2026-07-05 12:38:16,789 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:16,791 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:17,061 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:17,062 [INFO] openai._base_client: Retrying request to /chat/completions in 0.411144 seconds
+2026-07-05 12:38:17,750 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:17,751 [INFO] openai._base_client: Retrying request to /chat/completions in 0.893361 seconds
+2026-07-05 12:38:18,923 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:18,924 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:19,190 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:19,191 [INFO] openai._base_client: Retrying request to /chat/completions in 0.442518 seconds
+2026-07-05 12:38:19,924 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:19,925 [INFO] openai._base_client: Retrying request to /chat/completions in 0.936556 seconds
+2026-07-05 12:38:21,143 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-07-05 12:38:21,145 [ERROR] src.explainability.llm_explainer: Failed to generate OpenAI explanation: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Falling back to rule-based explanation.
+2026-07-05 12:38:21,168 [INFO] src.evaluation.visualizer:  HTML Report saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/explanation_report.html
+2026-07-05 12:38:21,180 [INFO] src.evaluation.visualizer:  JSON Results saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/results.json
+2026-07-05 12:38:21,180 [INFO] MAIN:  Pipeline complete!
+2026-07-05 12:38:21,180 [INFO] MAIN:  GAN vs CTGAN comparison: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-05 12:38:21,180 [INFO] MAIN:  Main report: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/explanation_report.html
+2026-07-05 12:38:21,180 [INFO] MAIN:  Simple GAN plots: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots
+2026-07-05 12:38:21,180 [INFO] MAIN:  CTGAN plots: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots

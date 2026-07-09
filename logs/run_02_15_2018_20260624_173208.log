@@ -1,0 +1,50 @@
+2026-06-24 17:32:09,307 [INFO] numexpr.utils: NumExpr defaulting to 8 threads.
+2026-06-24 17:32:26,148 [INFO] RUN_ON_FILE: ============================================================
+2026-06-24 17:32:26,148 [INFO] RUN_ON_FILE:  Run tag   : 02_15_2018
+2026-06-24 17:32:26,149 [INFO] RUN_ON_FILE:  CSV file  : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-06-24 17:32:26,149 [INFO] RUN_ON_FILE:  Results   : /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018
+2026-06-24 17:32:26,149 [INFO] RUN_ON_FILE:  Device    : cpu | CPU threads: 2
+2026-06-24 17:32:26,149 [INFO] RUN_ON_FILE: ============================================================
+2026-06-24 17:32:26,149 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-06-24 17:32:34,293 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-06-24 17:32:35,512 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199999, 80)
+2026-06-24 17:32:35,671 [INFO] src.data_processing.preprocessor:    Attack types detected in CSV: ['DoS attacks-GoldenEye', 'DoS attacks-Slowloris']
+2026-06-24 17:32:35,673 [INFO] src.data_processing.preprocessor:    Label distribution:
+binary_label
+0    189986
+1     10013
+2026-06-24 17:32:36,002 [INFO] src.data_processing.preprocessor:    Features after cleaning: 78
+2026-06-24 17:32:36,459 [INFO] src.data_processing.preprocessor:    Train=139999  Val=20000  Test=40000
+2026-06-24 17:32:36,730 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed_02_15_2018
+2026-06-24 17:32:36,762 [INFO] RUN_ON_FILE:  Training Baseline Classifier (no GAN augmentation)...
+2026-06-24 17:32:36,819 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 139999  (real=139999  synth=0)
+2026-06-24 17:32:44,070 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.0516  vl_loss=0.0435  tr_acc=0.0501  vl_acc=0.0500  vl_f1=0.0953
+2026-06-24 17:33:14,272 [INFO] src.training.train_classifier:   [Epoch  5/60]  tr_loss=0.0423  vl_loss=0.0421  tr_acc=0.0501  vl_acc=0.0500  vl_f1=0.0953
+2026-06-24 17:33:44,020 [INFO] src.training.train_classifier:    Early stopping at epoch 9 (best val_f1=0.0953)
+2026-06-24 17:33:44,030 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results_02_15_2018/models/classifier_baseline.pt
+2026-06-24 17:33:44,050 [INFO] RUN_ON_FILE:  [Baseline] Searching for optimal threshold...
+2026-06-24 17:33:44,517 [INFO] src.training.train_classifier:  Optimal threshold (metric=f1): 0.520  (score=0.9781)
+2026-06-24 17:33:44,517 [INFO] src.training.train_classifier:    At threshold 0.520 → predicted anomaly: 1011 / 20000 samples  (5.1%)
+2026-06-24 17:33:45,030 [INFO] src.evaluation.metrics:  base_Metrics:
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_accuracy                            0.9979
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_balanced_accuracy                   0.9911
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_precision                           0.9738
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_recall                              0.9835
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_f1_score                            0.9786
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_n_predicted_anomaly                 2023
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_n_true_anomaly                      2003
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_false_positive_rate                 0.0009
+2026-06-24 17:33:45,031 [INFO] src.evaluation.metrics:    base_roc_auc                             0.9941
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_pr_auc                              0.9899
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Benign_precision                    0.9991
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Benign_recall                       0.9986
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Benign_f1                           0.9989
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Anomaly_precision                   0.9738
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Anomaly_recall                      0.9835
+2026-06-24 17:33:45,032 [INFO] src.evaluation.metrics:    base_Anomaly_f1                          0.9786
+2026-06-24 17:33:45,032 [INFO] RUN_ON_FILE:  [Simple GAN] Training...
+2026-06-24 17:33:45,045 [INFO] src.training.train_gan:  GAN Training | Anomaly samples: 7009 | Epochs: 300
+2026-06-24 17:33:45,896 [INFO] src.training.train_gan:   [Epoch   1/300]  G_loss=0.6805  D_loss=0.6447
+2026-06-24 17:33:59,969 [INFO] src.training.train_gan:   [Epoch  20/300]  G_loss=1.9849  D_loss=0.1645
+2026-06-24 17:34:14,951 [INFO] src.training.train_gan:   [Epoch  40/300]  G_loss=2.5410  D_loss=0.0952
+2026-06-24 17:34:30,233 [INFO] src.training.train_gan:   [Epoch  60/300]  G_loss=2.9198  D_loss=0.0624

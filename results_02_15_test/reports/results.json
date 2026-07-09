@@ -1,0 +1,175 @@
+{
+  "optimal_threshold": 0.5,
+  "final_metrics": {
+    "accuracy": 0.9975,
+    "balanced_accuracy": 0.975337,
+    "precision": 0.975337,
+    "recall": 0.975337,
+    "f1_score": 0.975337,
+    "n_predicted_anomaly": 100,
+    "n_true_anomaly": 100,
+    "false_positive_rate": 0.0011,
+    "roc_auc": 0.99567,
+    "Benign_precision": 0.998947,
+    "Benign_recall": 0.998947,
+    "Benign_f1": 0.998947,
+    "Botnet_precision": 0.974684,
+    "Botnet_recall": 0.974684,
+    "Botnet_f1": 0.974684,
+    "Malware_precision": 0.952381,
+    "Malware_recall": 0.952381,
+    "Malware_f1": 0.952381
+  },
+  "attack_type_breakdown": {
+    "per_attack": [
+      {
+        "attack_type": "Botnet",
+        "total_in_test": 79,
+        "true_positives": 78,
+        "false_negatives": 1,
+        "detection_rate": 0.9873
+      },
+      {
+        "attack_type": "Malware",
+        "total_in_test": 21,
+        "true_positives": 20,
+        "false_negatives": 1,
+        "detection_rate": 0.9524
+      }
+    ],
+    "total_attacks_in_test": 100,
+    "total_detected": 98,
+    "overall_detection_rate": 0.98,
+    "false_positives": 2,
+    "n_benign_in_test": 1900,
+    "false_positive_rate": 0.0011
+  },
+  "model_comparison": [
+    {
+      "Model": "Tabular Baseline (MLP)",
+      "Accuracy": "0.9945",
+      "Balanced Accuracy": "0.8801",
+      "Precision": "0.9679",
+      "Recall": "0.8801",
+      "F1 Score": "0.9166",
+      "Roc Auc": "0.9898"
+    },
+    {
+      "Model": "Tabular Simple GAN + MLP",
+      "Accuracy": "0.9935",
+      "Balanced Accuracy": "0.8797",
+      "Precision": "0.9444",
+      "Recall": "0.8797",
+      "F1 Score": "0.9074",
+      "Roc Auc": "0.9886"
+    },
+    {
+      "Model": "Tabular CTGAN + MLP",
+      "Accuracy": "0.9940",
+      "Balanced Accuracy": "0.8840",
+      "Precision": "0.9566",
+      "Recall": "0.8840",
+      "F1 Score": "0.9127",
+      "Roc Auc": "0.9914"
+    },
+    {
+      "Model": "Hybrid Baseline",
+      "Accuracy": "0.9970",
+      "Balanced Accuracy": "0.9478",
+      "Precision": "0.9910",
+      "Recall": "0.9478",
+      "F1 Score": "0.9675",
+      "Roc Auc": "0.9889"
+    },
+    {
+      "Model": "Hybrid Simple GAN + DistilBERT",
+      "Accuracy": "0.9975",
+      "Balanced Accuracy": "0.9753",
+      "Precision": "0.9753",
+      "Recall": "0.9753",
+      "F1 Score": "0.9753",
+      "Roc Auc": "0.9957"
+    },
+    {
+      "Model": "Hybrid CTGAN + DistilBERT",
+      "Accuracy": "0.9965",
+      "Balanced Accuracy": "0.9360",
+      "Precision": "0.9615",
+      "Recall": "0.9360",
+      "F1 Score": "0.9467",
+      "Roc Auc": "0.9836"
+    }
+  ],
+  "bert_explanations": [
+    {
+      "sample_idx": 1003,
+      "prediction": "Benign",
+      "confidence": "99.6%",
+      "attack_type": "Benign",
+      "explanation": "[PREDICTION]: BENIGN | Confidence: 99.6%\n[FLOW DESCRIPTION]: Network flow characteristics: Protocol = 1.38; Fwd Seg Size Min = -1.12; Pkt Len Min is high (0.97); Fwd Pkt Len Min is high (0.94); PSH Flag Cnt count is 0.8; Down/Up Ratio = 0.71; ACK Flag Cnt count is 0.6; Fwd Pkt Len Std is low (-0.59); Bwd Pkt Len Std is low (-0.58); Pkt Len Std is low (-0.58).\n[REASON]: The flow characteristics are consistent with benign IoT communication. Packet lengths, transmission rates, and protocol flag frequencies are within normal operating bounds.\n[ATTACK TYPE]: N/A\n[RECOMMENDATION]: No action required. Continue monitoring traffic logs."
+    },
+    {
+      "sample_idx": 329,
+      "prediction": "Botnet",
+      "confidence": "99.6%",
+      "attack_type": "Botnet",
+      "explanation": "[PREDICTION]: BOTNET (Attack) | Confidence: 99.6%\n[FLOW DESCRIPTION]: Network flow characteristics: Init Fwd Win Byts = 2.14; Fwd Seg Size Min = 2.05; Bwd Pkt Len Std is high (1.75); Fwd Pkt Len Std is high (1.45); Pkt Len Std is high (1.34); PSH Flag Cnt count is 1.3; Bwd Pkt Len Max is high (1.29); Pkt Len Max is high (1.27); Fwd Seg Size Avg = 0.87; Fwd Pkt Len Mean is high (0.87).\n[REASON]: The network flow matches Botnet patterns. We observed high-rate packet flooding and/or brute force attempts (e.g., FTP/SSH Brute Force, DoS-Hulk, DoS-GoldenEye). The hybrid fusion model flagged this anomalous traffic using both tabular signature features and text representation semantics processed by DistilBERT.\n[ATTACK TYPE]: Botnet (Botnet)\n[RECOMMENDATION]: Immediate action required. Isolate the affected IoT device. Block the source IP on the firewall. Update SSH/FTP credentials immediately. Review traffic rate limiting policies."
+    },
+    {
+      "sample_idx": 116,
+      "prediction": "Malware",
+      "confidence": "99.9%",
+      "attack_type": "Malware",
+      "explanation": "[PREDICTION]: MALWARE (Attack) | Confidence: 99.9%\n[FLOW DESCRIPTION]: Network flow characteristics: Active Mean = 8.12; Idle Std = 7.90; Bwd IAT Std = 7.60; Bwd IAT Mean = 7.18; Active Min = 7.10; Active Max = 7.06; Bwd IAT Max = 5.59; Active Std = 5.15; Bwd IAT Min = 4.73; Bwd IAT Tot = 3.25.\n[REASON]: The network flow matches Malware patterns. We observed slow-rate exhaustion or application exploits (e.g., DoS-Slowloris, DoS-SlowHTTPTest). Unlike high-rate Botnet flooding, this traffic uses low packet frequency but holds sockets open, which the hybrid model detected via temporal features and text embeddings.\n[ATTACK TYPE]: Malware (Malware)\n[RECOMMENDATION]: Immediate action required. Terminate active slow connections. Configure Web Server timeout settings (e.g., RequestReadTimeout). Deploy a Web Application Firewall (WAF) to filter slow-rate connection hijacking."
+    },
+    {
+      "sample_idx": 1465,
+      "prediction": "Benign",
+      "confidence": "99.8%",
+      "attack_type": "Benign",
+      "explanation": "[PREDICTION]: BENIGN | Confidence: 99.8%\n[FLOW DESCRIPTION]: Network flow characteristics: ECE Flag Cnt count is 4.0; RST Flag Cnt count is 4.0; Init Bwd Win Byts = 3.38; Fwd Pkt Len Max is high (2.15); Fwd Pkt Len Std is high (1.77); Bwd Pkt Len Max is high (1.69); Pkt Len Max is high (1.68); Fwd Pkt Len Mean is high (1.46); Fwd Seg Size Avg = 1.46; PSH Flag Cnt count is 1.3.\n[REASON]: The flow characteristics are consistent with benign IoT communication. Packet lengths, transmission rates, and protocol flag frequencies are within normal operating bounds.\n[ATTACK TYPE]: N/A\n[RECOMMENDATION]: No action required. Continue monitoring traffic logs."
+    },
+    {
+      "sample_idx": 94,
+      "prediction": "Botnet",
+      "confidence": "99.6%",
+      "attack_type": "Botnet",
+      "explanation": "[PREDICTION]: BOTNET (Attack) | Confidence: 99.6%\n[FLOW DESCRIPTION]: Network flow characteristics: Init Fwd Win Byts = 2.14; Fwd Seg Size Min = 2.05; Fwd Pkt Len Std is high (1.87); Bwd Pkt Len Std is high (1.75); Pkt Len Std is high (1.38); PSH Flag Cnt count is 1.3; Bwd Pkt Len Max is high (1.29); Pkt Len Max is high (1.27); Fwd Pkt Len Mean is high (1.23); Fwd Seg Size Avg = 1.23.\n[REASON]: The network flow matches Botnet patterns. We observed high-rate packet flooding and/or brute force attempts (e.g., FTP/SSH Brute Force, DoS-Hulk, DoS-GoldenEye). The hybrid fusion model flagged this anomalous traffic using both tabular signature features and text representation semantics processed by DistilBERT.\n[ATTACK TYPE]: Botnet (Botnet)\n[RECOMMENDATION]: Immediate action required. Isolate the affected IoT device. Block the source IP on the firewall. Update SSH/FTP credentials immediately. Review traffic rate limiting policies."
+    },
+    {
+      "sample_idx": 380,
+      "prediction": "Malware",
+      "confidence": "99.9%",
+      "attack_type": "Malware",
+      "explanation": "[PREDICTION]: MALWARE (Attack) | Confidence: 99.9%\n[FLOW DESCRIPTION]: Network flow characteristics: Active Mean = 8.32; Idle Std = 7.92; Bwd IAT Std = 7.64; Active Min = 7.61; Bwd IAT Mean = 7.20; Active Max = 7.05; Bwd IAT Max = 5.60; Bwd IAT Min = 4.73; Active Std = 4.68; Bwd IAT Tot = 3.26.\n[REASON]: The network flow matches Malware patterns. We observed slow-rate exhaustion or application exploits (e.g., DoS-Slowloris, DoS-SlowHTTPTest). Unlike high-rate Botnet flooding, this traffic uses low packet frequency but holds sockets open, which the hybrid model detected via temporal features and text embeddings.\n[ATTACK TYPE]: Malware (Malware)\n[RECOMMENDATION]: Immediate action required. Terminate active slow connections. Configure Web Server timeout settings (e.g., RequestReadTimeout). Deploy a Web Application Firewall (WAF) to filter slow-rate connection hijacking."
+    },
+    {
+      "sample_idx": 867,
+      "prediction": "Benign",
+      "confidence": "99.6%",
+      "attack_type": "Benign",
+      "explanation": "[PREDICTION]: BENIGN | Confidence: 99.6%\n[FLOW DESCRIPTION]: Network flow characteristics: URG Flag Cnt count is 4.5; ACK Flag Cnt count is 1.6; Bwd Pkts/s is high (1.20); Fwd Seg Size Avg = -0.89; Fwd Pkt Len Mean is low (-0.89); Pkt Size Avg is low (-0.77); PSH Flag Cnt count is 0.8; Down/Up Ratio = 0.71; Pkt Len Max is low (-0.69); Pkt Len Mean is low (-0.68).\n[REASON]: The flow characteristics are consistent with benign IoT communication. Packet lengths, transmission rates, and protocol flag frequencies are within normal operating bounds.\n[ATTACK TYPE]: N/A\n[RECOMMENDATION]: No action required. Continue monitoring traffic logs."
+    },
+    {
+      "sample_idx": 164,
+      "prediction": "Benign",
+      "confidence": "99.7%",
+      "attack_type": "Benign",
+      "explanation": "[PREDICTION]: BENIGN | Confidence: 99.7%\n[FLOW DESCRIPTION]: Network flow characteristics: Bwd Pkt Len Min is high (1.60); Protocol = 1.38; Fwd Seg Size Min = -1.12; PSH Flag Cnt count is 0.8; Pkt Len Min is high (0.74); Fwd Pkt Len Min is high (0.72); Down/Up Ratio = 0.71; ACK Flag Cnt count is 0.6; Fwd Pkt Len Std is low (-0.59); Bwd Pkt Len Std is low (-0.58).\n[REASON]: The flow characteristics are consistent with benign IoT communication. Packet lengths, transmission rates, and protocol flag frequencies are within normal operating bounds.\n[ATTACK TYPE]: N/A\n[RECOMMENDATION]: No action required. Continue monitoring traffic logs."
+    },
+    {
+      "sample_idx": 944,
+      "prediction": "Malware",
+      "confidence": "99.7%",
+      "attack_type": "Malware",
+      "explanation": "[PREDICTION]: MALWARE (Attack) | Confidence: 99.7%\n[FLOW DESCRIPTION]: Network flow characteristics: Bwd IAT Min = 18.12; Bwd IAT Mean = 16.04; Flow IAT Std = 11.70; Fwd IAT Min = 8.93; Bwd IAT Max = 8.83; Fwd IAT Mean = 8.81; Idle Min = 7.92; Idle Mean = 7.77; Idle Max = 7.41; Fwd IAT Max = 6.35.\n[REASON]: The network flow matches Malware patterns. We observed slow-rate exhaustion or application exploits (e.g., DoS-Slowloris, DoS-SlowHTTPTest). Unlike high-rate Botnet flooding, this traffic uses low packet frequency but holds sockets open, which the hybrid model detected via temporal features and text embeddings.\n[ATTACK TYPE]: Malware (Malware)\n[RECOMMENDATION]: Immediate action required. Terminate active slow connections. Configure Web Server timeout settings (e.g., RequestReadTimeout). Deploy a Web Application Firewall (WAF) to filter slow-rate connection hijacking."
+    },
+    {
+      "sample_idx": 808,
+      "prediction": "Botnet",
+      "confidence": "79.1%",
+      "attack_type": "Botnet",
+      "explanation": "[PREDICTION]: BOTNET (Attack) | Confidence: 79.1%\n[FLOW DESCRIPTION]: Network flow characteristics: Fwd Pkt Len Std is high (3.43); Fwd Seg Size Avg = 2.57; Fwd Pkt Len Mean is high (2.57); Fwd Pkt Len Max is high (2.27); Init Fwd Win Byts = 2.14; Fwd Seg Size Min = 2.05; PSH Flag Cnt count is 1.3; Pkt Len Std is high (1.14); Bwd Pkt Len Std is high (1.01); Down/Up Ratio = 0.71.\n[REASON]: The network flow matches Botnet patterns. We observed high-rate packet flooding and/or brute force attempts (e.g., FTP/SSH Brute Force, DoS-Hulk, DoS-GoldenEye). The hybrid fusion model flagged this anomalous traffic using both tabular signature features and text representation semantics processed by DistilBERT.\n[ATTACK TYPE]: Botnet (Botnet)\n[RECOMMENDATION]: Immediate action required. Isolate the affected IoT device. Block the source IP on the firewall. Update SSH/FTP credentials immediately. Review traffic rate limiting policies."
+    }
+  ]
+}

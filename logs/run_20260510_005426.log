@@ -1,0 +1,22 @@
+2026-05-10 00:54:26,458 [INFO] MAIN:  Starting GAN + BERT Hybrid Anomaly Detection
+2026-05-10 00:54:26,459 [INFO] MAIN:  Device: cpu
+2026-05-10 00:54:26,459 [INFO] src.data_processing.preprocessor:  Loading dataset from: C:\Users\arsla\Desktop\MachineLearning\MachineLearning\ANOMOLY_DETECTION_FOR_IOT\02-14-2018.csv
+2026-05-10 00:54:40,438 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-05-10 00:54:43,775 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199998, 80)
+2026-05-10 00:54:44,051 [INFO] src.data_processing.preprocessor:    Label distribution:
+0    127339
+1     72659
+2026-05-10 00:54:45,383 [INFO] src.data_processing.preprocessor:    Features after cleaning: 78
+2026-05-10 00:54:46,444 [INFO] src.data_processing.preprocessor:    Train=139998  Val=20000  Test=40000
+2026-05-10 00:54:46,950 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: C:\Users\arsla\Desktop\MachineLearning\MachineLearning\ANOMOLY_DETECTION_FOR_IOT\data\processed
+2026-05-10 00:54:47,003 [INFO] MAIN:  Training Baseline Classifier...
+2026-05-10 00:54:47,192 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 139998
+2026-05-10 00:54:47,296 [ERROR] MAIN:  Pipeline failed: ReduceLROnPlateau.__init__() got an unexpected keyword argument 'verbose'
+Traceback (most recent call last):
+  File "C:\Users\arsla\Desktop\MachineLearning\MachineLearning\ANOMOLY_DETECTION_FOR_IOT\main.py", line 122, in <module>
+    main()
+  File "C:\Users\arsla\Desktop\MachineLearning\MachineLearning\ANOMOLY_DETECTION_FOR_IOT\main.py", line 45, in main
+    _ = train_classifier(
+  File "C:\Users\arsla\Desktop\MachineLearning\MachineLearning\ANOMOLY_DETECTION_FOR_IOT\src\training\train_classifier.py", line 62, in train_classifier
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+TypeError: ReduceLROnPlateau.__init__() got an unexpected keyword argument 'verbose'

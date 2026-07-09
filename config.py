@@ -1,0 +1,145 @@
+import os
+from dotenv import load_dotenv
+
+BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
+# Load environment variables from .env
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+DATA_DIR        = os.path.join(BASE_DIR, "data")
+RAW_DATA_PATH   = os.path.join(BASE_DIR, "test_data1.csv")
+PROCESSED_DIR   = os.path.join(DATA_DIR, "processed")
+RESULTS_DIR     = os.path.join(BASE_DIR, "results")
+PLOTS_DIR       = os.path.join(RESULTS_DIR, "plots")
+REPORTS_DIR     = os.path.join(RESULTS_DIR, "reports")
+MODELS_DIR      = os.path.join(RESULTS_DIR, "models")
+LOGS_DIR        = os.path.join(BASE_DIR, "logs")
+
+# Separate outputs: Simple GAN vs CTGAN (for side-by-side comparison)
+SIMPLE_GAN_DIR          = os.path.join(RESULTS_DIR, "simple_gan")
+SIMPLE_GAN_PLOTS_DIR    = os.path.join(SIMPLE_GAN_DIR, "plots")
+SIMPLE_GAN_MODELS_DIR   = os.path.join(SIMPLE_GAN_DIR, "models")
+
+CTGAN_DIR               = os.path.join(RESULTS_DIR, "ctgan")
+CTGAN_PLOTS_DIR         = os.path.join(CTGAN_DIR, "plots")
+CTGAN_MODELS_DIR        = os.path.join(CTGAN_DIR, "models")
+
+COMPARISON_REPORTS_DIR  = os.path.join(REPORTS_DIR, "comparison")
+
+LABEL_COL       = "Label"
+SAMPLE_SIZE     = 50
+RANDOM_STATE    = 42
+TEST_SIZE       = 0.20
+VAL_SIZE        = 0.10
+
+# NOTE: The preprocessor now auto-detects ALL non-Benign rows as anomaly (label=1).
+# This LABEL_MAP is kept for reference / legacy compatibility only.
+# It no longer filters rows — any CSV attack type will be detected.
+LABEL_MAP = {
+    # 02-14-2018.csv
+    "Benign":                   0,
+    "FTP-BruteForce":           1,
+    "SSH-Bruteforce":           1,
+    # 02-15-2018.csv
+    "DoS attacks-GoldenEye":    1,
+    "DoS attacks-Slowloris":    1,
+    "DoS attacks-Hulk":         1,
+    "DoS attacks-SlowHTTPTest": 1,
+    # Generic fallback — all non-Benign rows map to 1 in the preprocessor
+}
+
+CLASS_NAMES  = ["Benign", "Anomaly"]
+ATTACK_TYPES = [
+    # 02-14-2018.csv
+    "FTP-BruteForce", "SSH-Bruteforce",
+    # 02-15-2018.csv
+    "DoS attacks-GoldenEye", "DoS attacks-Slowloris",
+    "DoS attacks-Hulk", "DoS attacks-SlowHTTPTest",
+]
+
+# ── GAN ────────────────────────────────────────────────────────────────────────
+LATENT_DIM      = 64
+GAN_EPOCHS      = 2
+GAN_BATCH_SIZE  = 256
+GAN_LR_G        = 2e-4
+GAN_LR_D        = 2e-4
+GAN_BETAS       = (0.5, 0.999)
+GAN_SYNTHETIC_SAMPLES = 10_000
+
+# ── GAN anti-evasion quality gate ─────────────────────────────────────────────
+# Synthetic samples where D(x) < DISC_QUALITY_THRESHOLD are discarded;
+# they look too much like normal traffic to augment the anomaly class.
+DISC_QUALITY_THRESHOLD = 0.55
+
+# ── CTGAN ──────────────────────────────────────────────────────────────────────
+CTGAN_EPOCHS            = 2
+CTGAN_BATCH_SIZE        = 500
+CTGAN_LR                = 2e-4
+CTGAN_PAC               = 10
+CTGAN_SYNTHETIC_SAMPLES = 10_000
+CTGAN_MAX_TRAIN_ROWS    = None    # None = use all anomaly rows
+# CTGAN quality gate: discard synthetic samples whose Mahalanobis distance
+# from the real anomaly distribution exceeds this percentile.
+CTGAN_MAHAL_PERCENTILE  = 95
+
+# ── Classifier ─────────────────────────────────────────────────────────────────
+CLF_EPOCHS       = 2
+CLF_BATCH_SIZE   = 256          # ↓ was 512 — smaller batches → better gradient signal
+CLF_LR           = 3e-4        # ↓ was 1e-3 — stable convergence
+CLF_HIDDEN       = [512, 256, 128, 64]  # ↑ was [256,128,64] — deeper network
+CLF_DROPOUT      = 0.4          # ↑ was 0.3 — more regularisation
+CLF_WEIGHT_DECAY = 1e-4
+
+# Focal Loss parameters (replaces BCE — designed for class-imbalanced data)
+FOCAL_GAMMA      = 2.0          # focusing parameter; 0 = standard CE
+FOCAL_ALPHA      = 0.75         # weight for the positive (anomaly) class
+
+# ── Threshold search ───────────────────────────────────────────────────────────
+# After training, sweep thresholds on the validation set to find the one that
+# maximises F1 (or balances precision/recall). This replaces the hard-coded 0.5
+# and stops the model from flagging ALL traffic as anomaly.
+THRESHOLD_SEARCH_MIN   = 0.05
+THRESHOLD_SEARCH_MAX   = 0.95
+THRESHOLD_SEARCH_STEP  = 0.01
+THRESHOLD_METRIC       = "accuracy"   # "f1" | "precision" | "recall" | "balanced_accuracy" | "accuracy"
+
+# ── 3-Class Configuration ──────────────────────────────────────────────────────
+CLASS_MAP_3CLASS = {
+    "Benign": 0,
+    "Botnet": 1,
+    "Malware": 2
+}
+CLASS_NAMES_3CLASS = ["Benign", "Botnet", "Malware"]
+
+# ── DistilBERT & Hybrid Model ──────────────────────────────────────────────────
+BERT_MODEL          = "distilbert-base-uncased"
+BERT_MAX_LEN        = 64
+BERT_BATCH_SIZE     = 64
+BERT_LR             = 2e-5
+BERT_EPOCHS         = 1
+FREEZE_BERT         = True       # Frozen backbone is extremely fast on CPU
+NUM_EXPLAIN_SAMPLES = 1
+
+# ── PCA & t-SNE Plotting ───────────────────────────────────────────────────────
+PCA_SAMPLE_SIZE     = 1000       # Number of samples to plot in PCA/t-SNE for speed
+
+# ── OpenAI Explainability ──────────────────────────────────────────────────────
+OPENAI_API_KEY      = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL        = "gpt-4o-mini"
+
+# ── System ─────────────────────────────────────────────────────────────────────
+TORCH_NUM_THREADS = 2
+PROCESS_NICE      = 10
+
+METRICS         = ["accuracy", "precision", "recall", "f1", "roc_auc"]
+
+FIGURE_DPI      = 150
+PALETTE         = {
+    "primary":      "#6C63FF",
+    "secondary":    "#FF6584",
+    "success":      "#43AA8B",
+    "warning":      "#F9C74F",
+    "danger":       "#F94144",
+    "background":   "#0F0F1A",
+    "surface":      "#1A1A2E",
+    "text":         "#E0E0FF",
+}

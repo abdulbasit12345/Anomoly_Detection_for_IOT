@@ -1,0 +1,462 @@
+2026-07-07 19:11:21,271 [INFO] MAIN:  Starting GAN + CTGAN + DistilBERT IoT Anomaly Detection Pipeline
+2026-07-07 19:11:21,273 [INFO] MAIN:  Device: cpu | CPU threads: 2
+2026-07-07 19:11:21,273 [INFO] src.data_processing.preprocessor:  Loading dataset from: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/02-15-2018.csv
+2026-07-07 19:11:37,556 [INFO] src.data_processing.preprocessor:    Raw shape: (1048575, 80)
+2026-07-07 19:11:39,561 [INFO] src.data_processing.preprocessor:    After stratified sampling: (199999, 80)
+2026-07-07 19:11:39,908 [INFO] src.data_processing.preprocessor:    Attack types mapped in CSV: ['Botnet', 'Malware']
+2026-07-07 19:11:39,912 [INFO] src.data_processing.preprocessor:    3-class distribution:
+label_3class
+0    189986
+1      7917
+2      2096
+2026-07-07 19:11:40,439 [INFO] src.data_processing.preprocessor:    Features after cleaning: 77
+2026-07-07 19:11:41,120 [INFO] src.data_processing.preprocessor:    Train=139999  Val=20000  Test=40000
+2026-07-07 19:11:41,600 [INFO] src.data_processing.preprocessor:  Preprocessing complete. Artifacts saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/data/processed
+2026-07-07 19:11:41,769 [INFO] MAIN:  Training Baseline Tabular MLP...
+2026-07-07 19:11:41,896 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 139999  (real=139999  synth=0)
+2026-07-07 19:11:56,680 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.2279  vl_loss=0.0343  tr_acc=0.9415  vl_acc=0.9936  vl_f1_macro=0.9045
+2026-07-07 19:15:03,188 [INFO] src.training.train_classifier:   [Epoch 10/60]  tr_loss=0.0062  vl_loss=0.0038  tr_acc=0.9982  vl_acc=0.9991  vl_f1_macro=0.9881
+2026-07-07 19:17:06,003 [INFO] src.training.train_classifier:    Early stopping at epoch 14 (best val_f1=0.9887)
+2026-07-07 19:17:06,056 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/classifier_baseline.pt
+2026-07-07 19:17:08,702 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-07 19:17:08,702 [INFO] src.evaluation.metrics:    accuracy                                 0.9992
+2026-07-07 19:17:08,703 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9954
+2026-07-07 19:17:08,704 [INFO] src.evaluation.metrics:    precision                                0.9814
+2026-07-07 19:17:08,704 [INFO] src.evaluation.metrics:    recall                                   0.9954
+2026-07-07 19:17:08,705 [INFO] src.evaluation.metrics:    f1_score                                 0.9882
+2026-07-07 19:17:08,705 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2024
+2026-07-07 19:17:08,706 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-07 19:17:08,706 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0007
+2026-07-07 19:17:08,706 [INFO] src.evaluation.metrics:    roc_auc                                  0.9999
+2026-07-07 19:17:08,707 [INFO] src.evaluation.metrics:    Benign_precision                         0.9999
+2026-07-07 19:17:08,707 [INFO] src.evaluation.metrics:    Benign_recall                            0.9993
+2026-07-07 19:17:08,708 [INFO] src.evaluation.metrics:    Benign_f1                                0.9996
+2026-07-07 19:17:08,708 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9968
+2026-07-07 19:17:08,710 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9987
+2026-07-07 19:17:08,711 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9978
+2026-07-07 19:17:08,711 [INFO] src.evaluation.metrics:    Malware_precision                        0.9474
+2026-07-07 19:17:08,712 [INFO] src.evaluation.metrics:    Malware_recall                           0.9881
+2026-07-07 19:17:08,712 [INFO] src.evaluation.metrics:    Malware_f1                               0.9673
+2026-07-07 19:17:09,769 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/confusion_matrix.png
+2026-07-07 19:17:11,241 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/roc_pr_curves.png
+2026-07-07 19:17:11,920 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/per_class_heatmap.png
+2026-07-07 19:17:11,921 [INFO] MAIN:  [Simple GAN] Training Class Generators...
+2026-07-07 19:17:11,931 [INFO] src.training.train_gan:  Starting GAN Training. Minority classes to balance: [1, 2]
+2026-07-07 19:17:11,934 [INFO] src.training.train_gan:  --- Training GAN for Class 1 (Samples: 5541, Epochs: 300) ---
+2026-07-07 19:17:14,487 [INFO] src.training.train_gan:   [Class 1 - Epoch   1/300]  G_loss=0.6921  D_loss=0.6480
+2026-07-07 19:20:06,099 [INFO] src.training.train_gan:   [Class 1 - Epoch  50/300]  G_loss=2.4712  D_loss=0.1008
+2026-07-07 19:29:15,641 [INFO] src.training.train_gan:   [Class 1 - Epoch 100/300]  G_loss=3.1414  D_loss=0.0508
+2026-07-07 19:34:35,898 [INFO] src.training.train_gan:   [Class 1 - Epoch 150/300]  G_loss=3.5898  D_loss=0.0326
+2026-07-07 19:36:54,323 [INFO] src.training.train_gan:   [Class 1 - Epoch 200/300]  G_loss=3.8582  D_loss=0.0242
+2026-07-07 19:39:51,130 [INFO] src.training.train_gan:   [Class 1 - Epoch 250/300]  G_loss=3.9816  D_loss=0.0210
+2026-07-07 19:42:16,650 [INFO] src.training.train_gan:   [Class 1 - Epoch 300/300]  G_loss=3.9790  D_loss=0.0216
+2026-07-07 19:42:16,949 [INFO] src.training.train_gan:  GAN Class 1 filter (D-score >= 0.55): kept 0 / 10000 samples (0.0%)
+2026-07-07 19:42:16,949 [WARNING] src.training.train_gan:  Anti-evasion filter removed ALL samples! Keeping top-50%% by D-score.
+2026-07-07 19:42:16,991 [INFO] src.training.train_gan:  --- Training GAN for Class 2 (Samples: 1468, Epochs: 300) ---
+2026-07-07 19:42:17,475 [INFO] src.training.train_gan:   [Class 2 - Epoch   1/300]  G_loss=0.6833  D_loss=0.6313
+2026-07-07 19:44:24,673 [INFO] src.training.train_gan:   [Class 2 - Epoch  50/300]  G_loss=1.9632  D_loss=0.1427
+2026-07-07 19:48:17,925 [INFO] src.training.train_gan:   [Class 2 - Epoch 100/300]  G_loss=2.7824  D_loss=0.0644
+2026-07-07 19:52:40,804 [INFO] src.training.train_gan:   [Class 2 - Epoch 150/300]  G_loss=3.1171  D_loss=0.0483
+2026-07-07 19:57:16,765 [INFO] src.training.train_gan:   [Class 2 - Epoch 200/300]  G_loss=3.3291  D_loss=0.0432
+2026-07-07 19:58:24,886 [INFO] src.training.train_gan:   [Class 2 - Epoch 250/300]  G_loss=3.4376  D_loss=0.0388
+2026-07-07 20:00:26,336 [INFO] src.training.train_gan:   [Class 2 - Epoch 300/300]  G_loss=3.4428  D_loss=0.0378
+2026-07-07 20:00:26,802 [INFO] src.training.train_gan:  GAN Class 2 filter (D-score >= 0.55): kept 0 / 10000 samples (0.0%)
+2026-07-07 20:00:26,802 [WARNING] src.training.train_gan:  Anti-evasion filter removed ALL samples! Keeping top-50%% by D-score.
+2026-07-07 20:00:26,856 [INFO] src.training.train_gan:  GAN training complete. Total synthetic samples: 10000
+2026-07-07 20:00:27,900 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/gan_loss_curves.png
+2026-07-07 20:00:29,865 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/pca_synthetic.png
+2026-07-07 20:00:30,912 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/class_distribution_comparison.png
+2026-07-07 20:00:30,912 [INFO] MAIN:  [Simple GAN] Training augmented tabular classifier...
+2026-07-07 20:00:31,203 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 149999  (real=139999  synth=10000)
+2026-07-07 20:01:39,655 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.3478  vl_loss=0.0295  tr_acc=0.8676  vl_acc=0.9852  vl_f1_macro=0.8560
+2026-07-07 20:11:19,259 [INFO] src.training.train_classifier:   [Epoch 10/60]  tr_loss=0.0073  vl_loss=0.0038  tr_acc=0.9980  vl_acc=0.9990  vl_f1_macro=0.9844
+2026-07-07 20:17:57,715 [INFO] src.training.train_classifier:   [Epoch 20/60]  tr_loss=0.0047  vl_loss=0.0027  tr_acc=0.9987  vl_acc=0.9992  vl_f1_macro=0.9890
+2026-07-07 20:19:42,112 [INFO] src.training.train_classifier:    Early stopping at epoch 23 (best val_f1=0.9902)
+2026-07-07 20:19:42,138 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/models/classifier_gan.pt
+2026-07-07 20:19:43,706 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-07 20:19:43,706 [INFO] src.evaluation.metrics:    accuracy                                 0.9992
+2026-07-07 20:19:43,707 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9962
+2026-07-07 20:19:43,707 [INFO] src.evaluation.metrics:    precision                                0.9818
+2026-07-07 20:19:43,707 [INFO] src.evaluation.metrics:    recall                                   0.9962
+2026-07-07 20:19:43,707 [INFO] src.evaluation.metrics:    f1_score                                 0.9888
+2026-07-07 20:19:43,708 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2023
+2026-07-07 20:19:43,708 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-07 20:19:43,708 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0006
+2026-07-07 20:19:43,708 [INFO] src.evaluation.metrics:    roc_auc                                  1.0000
+2026-07-07 20:19:43,708 [INFO] src.evaluation.metrics:    Benign_precision                         0.9999
+2026-07-07 20:19:43,709 [INFO] src.evaluation.metrics:    Benign_recall                            0.9994
+2026-07-07 20:19:43,709 [INFO] src.evaluation.metrics:    Benign_f1                                0.9996
+2026-07-07 20:19:43,709 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9981
+2026-07-07 20:19:43,709 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9987
+2026-07-07 20:19:43,709 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9984
+2026-07-07 20:19:43,710 [INFO] src.evaluation.metrics:    Malware_precision                        0.9475
+2026-07-07 20:19:43,710 [INFO] src.evaluation.metrics:    Malware_recall                           0.9905
+2026-07-07 20:19:43,710 [INFO] src.evaluation.metrics:    Malware_f1                               0.9685
+2026-07-07 20:19:44,240 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/confusion_matrix.png
+2026-07-07 20:19:45,366 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/roc_pr_curves.png
+2026-07-07 20:19:45,880 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/per_class_heatmap.png
+2026-07-07 20:19:45,881 [INFO] MAIN:  [CTGAN] Training Class Generators...
+2026-07-07 20:19:46,803 [INFO] src.training.train_ctgan:  Starting CTGAN Training. Minority classes to balance: [1, 2]
+2026-07-07 20:19:46,805 [INFO] src.training.train_ctgan:  --- Training CTGAN for Class 1 (Samples: 5541) ---
+2026-07-07 20:19:46,806 [INFO] src.training.train_ctgan:  CTGAN Class 1 Training | Epochs: 200 | Batch: 500 | Pac: 10
+2026-07-07 20:19:48,067 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Protocol. Extra column not created.
+2026-07-07 20:19:48,369 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Duration. Extra column not created.
+2026-07-07 20:19:49,510 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Fwd Pkts. Extra column not created.
+2026-07-07 20:19:50,870 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Bwd Pkts. Extra column not created.
+2026-07-07 20:19:51,080 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Fwd Pkts. Extra column not created.
+2026-07-07 20:19:52,289 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Bwd Pkts. Extra column not created.
+2026-07-07 20:19:53,373 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Max. Extra column not created.
+2026-07-07 20:19:54,675 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Min. Extra column not created.
+2026-07-07 20:19:54,744 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Mean. Extra column not created.
+2026-07-07 20:19:55,870 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Std. Extra column not created.
+2026-07-07 20:19:57,257 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Max. Extra column not created.
+2026-07-07 20:19:57,329 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Min. Extra column not created.
+2026-07-07 20:19:57,407 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Mean. Extra column not created.
+2026-07-07 20:19:57,609 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Std. Extra column not created.
+2026-07-07 20:19:57,758 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Byts/s. Extra column not created.
+2026-07-07 20:19:59,168 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Pkts/s. Extra column not created.
+2026-07-07 20:20:00,497 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Mean. Extra column not created.
+2026-07-07 20:20:02,090 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Std. Extra column not created.
+2026-07-07 20:20:03,389 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Max. Extra column not created.
+2026-07-07 20:20:05,079 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Min. Extra column not created.
+2026-07-07 20:20:06,075 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Tot. Extra column not created.
+2026-07-07 20:20:07,652 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Mean. Extra column not created.
+2026-07-07 20:20:09,396 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Std. Extra column not created.
+2026-07-07 20:20:11,919 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Max. Extra column not created.
+2026-07-07 20:20:14,091 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Min. Extra column not created.
+2026-07-07 20:20:15,958 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Tot. Extra column not created.
+2026-07-07 20:20:17,897 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Mean. Extra column not created.
+2026-07-07 20:20:19,758 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Std. Extra column not created.
+2026-07-07 20:20:20,561 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Max. Extra column not created.
+2026-07-07 20:20:21,793 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Min. Extra column not created.
+2026-07-07 20:20:22,180 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd PSH Flags. Extra column not created.
+2026-07-07 20:20:22,278 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd PSH Flags. Extra column not created.
+2026-07-07 20:20:22,368 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd URG Flags. Extra column not created.
+2026-07-07 20:20:22,471 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd URG Flags. Extra column not created.
+2026-07-07 20:20:22,565 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Header Len. Extra column not created.
+2026-07-07 20:20:23,564 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Header Len. Extra column not created.
+2026-07-07 20:20:23,827 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/s. Extra column not created.
+2026-07-07 20:20:25,571 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/s. Extra column not created.
+2026-07-07 20:20:25,978 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Min. Extra column not created.
+2026-07-07 20:20:26,074 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Max. Extra column not created.
+2026-07-07 20:20:26,645 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Mean. Extra column not created.
+2026-07-07 20:20:28,042 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Std. Extra column not created.
+2026-07-07 20:20:29,357 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Var. Extra column not created.
+2026-07-07 20:20:31,161 [INFO] rdt.transformers.null: Guidance: There are no missing values in column FIN Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,324 [INFO] rdt.transformers.null: Guidance: There are no missing values in column SYN Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,498 [INFO] rdt.transformers.null: Guidance: There are no missing values in column RST Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,616 [INFO] rdt.transformers.null: Guidance: There are no missing values in column PSH Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,771 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ACK Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,835 [INFO] rdt.transformers.null: Guidance: There are no missing values in column URG Flag Cnt. Extra column not created.
+2026-07-07 20:20:31,902 [INFO] rdt.transformers.null: Guidance: There are no missing values in column CWE Flag Count. Extra column not created.
+2026-07-07 20:20:31,961 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ECE Flag Cnt. Extra column not created.
+2026-07-07 20:20:32,025 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Down/Up Ratio. Extra column not created.
+2026-07-07 20:20:32,085 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Size Avg. Extra column not created.
+2026-07-07 20:20:33,202 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Avg. Extra column not created.
+2026-07-07 20:20:34,545 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Seg Size Avg. Extra column not created.
+2026-07-07 20:20:34,790 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Byts/b Avg. Extra column not created.
+2026-07-07 20:20:34,876 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/b Avg. Extra column not created.
+2026-07-07 20:20:34,961 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Blk Rate Avg. Extra column not created.
+2026-07-07 20:20:35,049 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Byts/b Avg. Extra column not created.
+2026-07-07 20:20:35,200 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/b Avg. Extra column not created.
+2026-07-07 20:20:35,300 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Blk Rate Avg. Extra column not created.
+2026-07-07 20:20:35,376 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Pkts. Extra column not created.
+2026-07-07 20:20:36,742 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Byts. Extra column not created.
+2026-07-07 20:20:38,196 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Pkts. Extra column not created.
+2026-07-07 20:20:38,313 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Byts. Extra column not created.
+2026-07-07 20:20:39,785 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Fwd Win Byts. Extra column not created.
+2026-07-07 20:20:39,936 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Bwd Win Byts. Extra column not created.
+2026-07-07 20:20:40,181 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Act Data Pkts. Extra column not created.
+2026-07-07 20:20:40,508 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Min. Extra column not created.
+2026-07-07 20:20:40,593 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Mean. Extra column not created.
+2026-07-07 20:20:41,055 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Std. Extra column not created.
+2026-07-07 20:20:41,254 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Max. Extra column not created.
+2026-07-07 20:20:41,518 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Min. Extra column not created.
+2026-07-07 20:20:41,985 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Mean. Extra column not created.
+2026-07-07 20:20:43,294 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Std. Extra column not created.
+2026-07-07 20:20:43,830 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Max. Extra column not created.
+2026-07-07 20:20:45,109 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Min. Extra column not created.
+2026-07-07 20:46:20,401 [INFO] src.training.train_ctgan:  CTGAN Mahalanobis filter (p95): kept 9500 / 10000 samples (95.0%)
+2026-07-07 20:46:20,405 [INFO] src.training.train_ctgan:  CTGAN Class 1 done. Final synthetic samples: 9500
+2026-07-07 20:46:20,762 [INFO] src.training.train_ctgan:  CTGAN Class 1 model saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/models/ctgan_model_class_1.pkl
+2026-07-07 20:46:20,767 [INFO] src.training.train_ctgan:  --- Training CTGAN for Class 2 (Samples: 1468) ---
+2026-07-07 20:46:20,769 [INFO] src.training.train_ctgan:  CTGAN Class 2 Training | Epochs: 200 | Batch: 500 | Pac: 10
+2026-07-07 20:46:20,799 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Protocol. Extra column not created.
+2026-07-07 20:46:20,850 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Duration. Extra column not created.
+2026-07-07 20:46:21,230 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Fwd Pkts. Extra column not created.
+2026-07-07 20:46:21,644 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Tot Bwd Pkts. Extra column not created.
+2026-07-07 20:46:21,742 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Fwd Pkts. Extra column not created.
+2026-07-07 20:46:21,959 [INFO] rdt.transformers.null: Guidance: There are no missing values in column TotLen Bwd Pkts. Extra column not created.
+2026-07-07 20:46:22,025 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Max. Extra column not created.
+2026-07-07 20:46:22,164 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Min. Extra column not created.
+2026-07-07 20:46:22,253 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Mean. Extra column not created.
+2026-07-07 20:46:22,457 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkt Len Std. Extra column not created.
+2026-07-07 20:46:22,595 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Max. Extra column not created.
+2026-07-07 20:46:22,645 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Min. Extra column not created.
+2026-07-07 20:46:22,686 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Mean. Extra column not created.
+2026-07-07 20:46:22,741 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkt Len Std. Extra column not created.
+2026-07-07 20:46:22,791 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Byts/s. Extra column not created.
+2026-07-07 20:46:23,157 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow Pkts/s. Extra column not created.
+2026-07-07 20:46:23,550 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Mean. Extra column not created.
+2026-07-07 20:46:23,775 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Std. Extra column not created.
+2026-07-07 20:46:24,045 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Max. Extra column not created.
+2026-07-07 20:46:24,415 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Flow IAT Min. Extra column not created.
+2026-07-07 20:46:24,585 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Tot. Extra column not created.
+2026-07-07 20:46:25,003 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Mean. Extra column not created.
+2026-07-07 20:46:25,421 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Std. Extra column not created.
+2026-07-07 20:46:25,705 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Max. Extra column not created.
+2026-07-07 20:46:26,045 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd IAT Min. Extra column not created.
+2026-07-07 20:46:26,388 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Tot. Extra column not created.
+2026-07-07 20:46:26,646 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Mean. Extra column not created.
+2026-07-07 20:46:26,819 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Std. Extra column not created.
+2026-07-07 20:46:26,990 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Max. Extra column not created.
+2026-07-07 20:46:27,205 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd IAT Min. Extra column not created.
+2026-07-07 20:46:27,389 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd PSH Flags. Extra column not created.
+2026-07-07 20:46:27,448 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd PSH Flags. Extra column not created.
+2026-07-07 20:46:27,517 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd URG Flags. Extra column not created.
+2026-07-07 20:46:27,581 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd URG Flags. Extra column not created.
+2026-07-07 20:46:27,641 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Header Len. Extra column not created.
+2026-07-07 20:46:27,859 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Header Len. Extra column not created.
+2026-07-07 20:46:27,953 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/s. Extra column not created.
+2026-07-07 20:46:28,333 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/s. Extra column not created.
+2026-07-07 20:46:28,589 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Min. Extra column not created.
+2026-07-07 20:46:28,637 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Max. Extra column not created.
+2026-07-07 20:46:28,766 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Mean. Extra column not created.
+2026-07-07 20:46:28,958 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Std. Extra column not created.
+2026-07-07 20:46:29,137 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Len Var. Extra column not created.
+2026-07-07 20:46:29,381 [INFO] rdt.transformers.null: Guidance: There are no missing values in column FIN Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,454 [INFO] rdt.transformers.null: Guidance: There are no missing values in column SYN Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,510 [INFO] rdt.transformers.null: Guidance: There are no missing values in column RST Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,562 [INFO] rdt.transformers.null: Guidance: There are no missing values in column PSH Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,607 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ACK Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,664 [INFO] rdt.transformers.null: Guidance: There are no missing values in column URG Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,721 [INFO] rdt.transformers.null: Guidance: There are no missing values in column CWE Flag Count. Extra column not created.
+2026-07-07 20:46:29,785 [INFO] rdt.transformers.null: Guidance: There are no missing values in column ECE Flag Cnt. Extra column not created.
+2026-07-07 20:46:29,851 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Down/Up Ratio. Extra column not created.
+2026-07-07 20:46:29,908 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Pkt Size Avg. Extra column not created.
+2026-07-07 20:46:30,427 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Avg. Extra column not created.
+2026-07-07 20:46:30,721 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Seg Size Avg. Extra column not created.
+2026-07-07 20:46:30,788 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Byts/b Avg. Extra column not created.
+2026-07-07 20:46:30,851 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Pkts/b Avg. Extra column not created.
+2026-07-07 20:46:30,910 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Blk Rate Avg. Extra column not created.
+2026-07-07 20:46:30,969 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Byts/b Avg. Extra column not created.
+2026-07-07 20:46:31,032 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Pkts/b Avg. Extra column not created.
+2026-07-07 20:46:31,104 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Bwd Blk Rate Avg. Extra column not created.
+2026-07-07 20:46:31,182 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Pkts. Extra column not created.
+2026-07-07 20:46:31,899 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Fwd Byts. Extra column not created.
+2026-07-07 20:46:32,336 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Pkts. Extra column not created.
+2026-07-07 20:46:32,448 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Subflow Bwd Byts. Extra column not created.
+2026-07-07 20:46:32,534 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Fwd Win Byts. Extra column not created.
+2026-07-07 20:46:32,631 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Init Bwd Win Byts. Extra column not created.
+2026-07-07 20:46:32,859 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Act Data Pkts. Extra column not created.
+2026-07-07 20:46:33,305 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Fwd Seg Size Min. Extra column not created.
+2026-07-07 20:46:33,361 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Mean. Extra column not created.
+2026-07-07 20:46:33,664 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Std. Extra column not created.
+2026-07-07 20:46:34,262 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Max. Extra column not created.
+2026-07-07 20:46:34,551 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Active Min. Extra column not created.
+2026-07-07 20:46:34,927 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Mean. Extra column not created.
+2026-07-07 20:46:35,187 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Std. Extra column not created.
+2026-07-07 20:46:35,422 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Max. Extra column not created.
+2026-07-07 20:46:35,632 [INFO] rdt.transformers.null: Guidance: There are no missing values in column Idle Min. Extra column not created.
+2026-07-07 20:51:09,684 [INFO] src.training.train_ctgan:  CTGAN Mahalanobis filter (p95): kept 9500 / 10000 samples (95.0%)
+2026-07-07 20:51:09,688 [INFO] src.training.train_ctgan:  CTGAN Class 2 done. Final synthetic samples: 9500
+2026-07-07 20:51:10,180 [INFO] src.training.train_ctgan:  CTGAN Class 2 model saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/models/ctgan_model_class_2.pkl
+2026-07-07 20:51:10,219 [INFO] src.training.train_ctgan:  CTGAN training complete. Total synthetic samples: 19000
+2026-07-07 20:51:11,432 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/gan_loss_curves.png
+2026-07-07 20:51:12,871 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/pca_synthetic.png
+2026-07-07 20:51:14,136 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/class_distribution_comparison.png
+2026-07-07 20:51:14,137 [INFO] MAIN:  [CTGAN] Training augmented tabular classifier...
+2026-07-07 20:51:14,542 [INFO] src.training.train_classifier:  Classifier Training | Augmented train size: 158999  (real=139999  synth=19000)
+2026-07-07 20:51:45,890 [INFO] src.training.train_classifier:   [Epoch  1/60]  tr_loss=0.2777  vl_loss=0.0173  tr_acc=0.9069  vl_acc=0.9963  vl_f1_macro=0.9330
+2026-07-07 20:56:27,632 [INFO] src.training.train_classifier:   [Epoch 10/60]  tr_loss=0.0072  vl_loss=0.0027  tr_acc=0.9980  vl_acc=0.9992  vl_f1_macro=0.9882
+2026-07-07 21:01:39,876 [INFO] src.training.train_classifier:   [Epoch 20/60]  tr_loss=0.0047  vl_loss=0.0030  tr_acc=0.9986  vl_acc=0.9990  vl_f1_macro=0.9867
+2026-07-07 21:02:58,648 [INFO] src.training.train_classifier:    Early stopping at epoch 22 (best val_f1=0.9885)
+2026-07-07 21:02:58,687 [INFO] src.training.train_classifier:  Classifier saved to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/models/classifier_ctgan.pt
+2026-07-07 21:03:01,515 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-07 21:03:01,516 [INFO] src.evaluation.metrics:    accuracy                                 0.9991
+2026-07-07 21:03:01,517 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9952
+2026-07-07 21:03:01,517 [INFO] src.evaluation.metrics:    precision                                0.9814
+2026-07-07 21:03:01,517 [INFO] src.evaluation.metrics:    recall                                   0.9952
+2026-07-07 21:03:01,518 [INFO] src.evaluation.metrics:    f1_score                                 0.9881
+2026-07-07 21:03:01,518 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2023
+2026-07-07 21:03:01,518 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-07 21:03:01,519 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0007
+2026-07-07 21:03:01,520 [INFO] src.evaluation.metrics:    roc_auc                                  0.9999
+2026-07-07 21:03:01,521 [INFO] src.evaluation.metrics:    Benign_precision                         0.9998
+2026-07-07 21:03:01,521 [INFO] src.evaluation.metrics:    Benign_recall                            0.9993
+2026-07-07 21:03:01,521 [INFO] src.evaluation.metrics:    Benign_f1                                0.9996
+2026-07-07 21:03:01,522 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9968
+2026-07-07 21:03:01,522 [INFO] src.evaluation.metrics:    Botnet_recall                            0.9981
+2026-07-07 21:03:01,523 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9975
+2026-07-07 21:03:01,523 [INFO] src.evaluation.metrics:    Malware_precision                        0.9474
+2026-07-07 21:03:01,524 [INFO] src.evaluation.metrics:    Malware_recall                           0.9881
+2026-07-07 21:03:01,524 [INFO] src.evaluation.metrics:    Malware_f1                               0.9673
+2026-07-07 21:03:02,429 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/confusion_matrix.png
+2026-07-07 21:03:04,084 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/roc_pr_curves.png
+2026-07-07 21:03:04,772 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/per_class_heatmap.png
+2026-07-07 21:03:04,773 [INFO] MAIN:  Extracting DistilBERT features for hybrid multimodal network...
+2026-07-07 21:03:18,547 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-07 21:03:19,824 [INFO] src.models.hybrid_model:  Extracting embeddings for 139999 sequences...
+2026-07-07 21:22:46,128 [INFO] src.models.hybrid_model:    Extracted: 6400/139999
+2026-07-07 21:43:08,601 [INFO] src.models.hybrid_model:    Extracted: 12800/139999
+2026-07-07 21:57:14,933 [INFO] src.models.hybrid_model:    Extracted: 19200/139999
+2026-07-07 22:04:18,086 [INFO] src.models.hybrid_model:    Extracted: 25600/139999
+2026-07-07 22:12:05,070 [INFO] src.models.hybrid_model:    Extracted: 32000/139999
+2026-07-07 22:23:30,918 [INFO] src.models.hybrid_model:    Extracted: 38400/139999
+2026-07-07 22:37:25,922 [INFO] src.models.hybrid_model:    Extracted: 44800/139999
+2026-07-07 22:51:16,701 [INFO] src.models.hybrid_model:    Extracted: 51200/139999
+2026-07-07 23:04:43,802 [INFO] src.models.hybrid_model:    Extracted: 57600/139999
+2026-07-07 23:18:56,084 [INFO] src.models.hybrid_model:    Extracted: 64000/139999
+2026-07-07 23:31:34,522 [INFO] src.models.hybrid_model:    Extracted: 70400/139999
+2026-07-07 23:44:56,338 [INFO] src.models.hybrid_model:    Extracted: 76800/139999
+2026-07-08 00:12:45,674 [INFO] src.models.hybrid_model:    Extracted: 83200/139999
+2026-07-08 00:22:54,164 [INFO] src.models.hybrid_model:    Extracted: 89600/139999
+2026-07-08 00:31:28,001 [INFO] src.models.hybrid_model:    Extracted: 96000/139999
+2026-07-08 00:40:11,033 [INFO] src.models.hybrid_model:    Extracted: 102400/139999
+2026-07-08 00:48:55,295 [INFO] src.models.hybrid_model:    Extracted: 108800/139999
+2026-07-08 00:57:24,225 [INFO] src.models.hybrid_model:    Extracted: 115200/139999
+2026-07-08 01:05:59,453 [INFO] src.models.hybrid_model:    Extracted: 121600/139999
+2026-07-08 01:14:35,977 [INFO] src.models.hybrid_model:    Extracted: 128000/139999
+2026-07-08 01:22:48,496 [INFO] src.models.hybrid_model:    Extracted: 134400/139999
+2026-07-08 01:31:14,770 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 01:31:16,770 [INFO] src.models.hybrid_model:  Extracting embeddings for 20000 sequences...
+2026-07-08 01:40:03,878 [INFO] src.models.hybrid_model:    Extracted: 6400/20000
+2026-07-08 01:48:03,955 [INFO] src.models.hybrid_model:    Extracted: 12800/20000
+2026-07-08 01:56:06,861 [INFO] src.models.hybrid_model:    Extracted: 19200/20000
+2026-07-08 01:57:05,480 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 01:57:06,763 [INFO] src.models.hybrid_model:  Extracting embeddings for 40000 sequences...
+2026-07-08 02:05:21,193 [INFO] src.models.hybrid_model:    Extracted: 6400/40000
+2026-07-08 02:13:06,953 [INFO] src.models.hybrid_model:    Extracted: 12800/40000
+2026-07-08 02:20:47,844 [INFO] src.models.hybrid_model:    Extracted: 19200/40000
+2026-07-08 02:28:12,347 [INFO] src.models.hybrid_model:    Extracted: 25600/40000
+2026-07-08 02:35:33,915 [INFO] src.models.hybrid_model:    Extracted: 32000/40000
+2026-07-08 02:43:03,835 [INFO] src.models.hybrid_model:    Extracted: 38400/40000
+2026-07-08 02:44:59,433 [INFO] MAIN:  Training Hybrid Baseline Model...
+2026-07-08 02:44:59,486 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 02:45:13,106 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/60] loss=0.3953 val_loss=0.0573 val_acc=0.9946 val_f1_macro=0.9106
+2026-07-08 02:46:47,231 [INFO] src.models.hybrid_model:   [Hybrid Epoch 10/60] loss=0.0038 val_loss=0.0024 val_acc=0.9993 val_f1_macro=0.9902
+2026-07-08 02:48:38,076 [INFO] src.models.hybrid_model:   [Hybrid Epoch 20/60] loss=0.0029 val_loss=0.0021 val_acc=0.9994 val_f1_macro=0.9910
+2026-07-08 02:50:20,608 [INFO] src.models.hybrid_model:   [Hybrid Epoch 30/60] loss=0.0020 val_loss=0.0017 val_acc=0.9993 val_f1_macro=0.9893
+2026-07-08 02:52:11,354 [INFO] src.models.hybrid_model:   [Hybrid Epoch 40/60] loss=0.0014 val_loss=0.0010 val_acc=0.9998 val_f1_macro=0.9979
+2026-07-08 02:53:50,127 [INFO] src.models.hybrid_model:   [Hybrid Epoch 50/60] loss=0.0008 val_loss=0.0007 val_acc=0.9999 val_f1_macro=0.9982
+2026-07-08 02:55:30,993 [INFO] src.models.hybrid_model:   [Hybrid Epoch 60/60] loss=0.0007 val_loss=0.0007 val_acc=0.9999 val_f1_macro=0.9982
+2026-07-08 02:55:31,013 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.9982) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/hybrid_baseline.pt
+2026-07-08 02:55:32,034 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 02:55:32,034 [INFO] src.evaluation.metrics:    accuracy                                 0.9998
+2026-07-08 02:55:32,034 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9968
+2026-07-08 02:55:32,034 [INFO] src.evaluation.metrics:    precision                                0.9977
+2026-07-08 02:55:32,034 [INFO] src.evaluation.metrics:    recall                                   0.9968
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    f1_score                                 0.9973
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2004
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0001
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    roc_auc                                  1.0000
+2026-07-08 02:55:32,035 [INFO] src.evaluation.metrics:    Benign_precision                         0.9999
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Benign_recall                            0.9999
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Benign_f1                                0.9999
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9981
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9991
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Malware_precision                        0.9952
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Malware_recall                           0.9905
+2026-07-08 02:55:32,036 [INFO] src.evaluation.metrics:    Malware_f1                               0.9928
+2026-07-08 02:55:32,036 [INFO] MAIN:  Training Hybrid Simple GAN Augmented Model...
+2026-07-08 02:55:32,405 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 02:55:33,642 [INFO] src.models.hybrid_model:  Extracting embeddings for 10000 sequences...
+2026-07-08 03:02:57,097 [INFO] src.models.hybrid_model:    Extracted: 6400/10000
+2026-07-08 03:07:00,604 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 03:07:11,933 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/60] loss=0.2861 val_loss=0.0373 val_acc=0.9958 val_f1_macro=0.9309
+2026-07-08 03:08:47,495 [INFO] src.models.hybrid_model:   [Hybrid Epoch 10/60] loss=0.0034 val_loss=0.0020 val_acc=0.9993 val_f1_macro=0.9902
+2026-07-08 03:10:34,041 [INFO] src.models.hybrid_model:   [Hybrid Epoch 20/60] loss=0.0025 val_loss=0.0023 val_acc=0.9992 val_f1_macro=0.9890
+2026-07-08 03:12:29,146 [INFO] src.models.hybrid_model:   [Hybrid Epoch 30/60] loss=0.0017 val_loss=0.0013 val_acc=0.9998 val_f1_macro=0.9963
+2026-07-08 03:14:18,736 [INFO] src.models.hybrid_model:   [Hybrid Epoch 40/60] loss=0.0010 val_loss=0.0007 val_acc=0.9999 val_f1_macro=0.9982
+2026-07-08 03:16:06,861 [INFO] src.models.hybrid_model:   [Hybrid Epoch 50/60] loss=0.0007 val_loss=0.0007 val_acc=0.9999 val_f1_macro=0.9982
+2026-07-08 03:17:53,421 [INFO] src.models.hybrid_model:   [Hybrid Epoch 60/60] loss=0.0006 val_loss=0.0006 val_acc=0.9999 val_f1_macro=0.9982
+2026-07-08 03:17:53,436 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.9982) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/hybrid_gan.pt
+2026-07-08 03:17:54,655 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    accuracy                                 0.9998
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9968
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    precision                                0.9977
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    recall                                   0.9968
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    f1_score                                 0.9973
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2004
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0001
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    roc_auc                                  1.0000
+2026-07-08 03:17:54,656 [INFO] src.evaluation.metrics:    Benign_precision                         0.9999
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Benign_recall                            0.9999
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Benign_f1                                0.9999
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9981
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9991
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Malware_precision                        0.9952
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Malware_recall                           0.9905
+2026-07-08 03:17:54,657 [INFO] src.evaluation.metrics:    Malware_f1                               0.9928
+2026-07-08 03:17:54,658 [INFO] MAIN:  Training Hybrid CTGAN Augmented Model...
+2026-07-08 03:17:55,455 [INFO] src.models.hybrid_model:  Initializing DistilBERT tokenizer & model for feature extraction...
+2026-07-08 03:17:56,664 [INFO] src.models.hybrid_model:  Extracting embeddings for 19000 sequences...
+2026-07-08 03:25:21,199 [INFO] src.models.hybrid_model:    Extracted: 6400/19000
+2026-07-08 03:32:34,760 [INFO] src.models.hybrid_model:    Extracted: 12800/19000
+2026-07-08 03:39:48,235 [INFO] src.models.hybrid_model:  Training Hybrid Multimodal Fusion Classifier (3 classes)...
+2026-07-08 03:40:01,166 [INFO] src.models.hybrid_model:   [Hybrid Epoch  1/60] loss=0.3294 val_loss=0.0435 val_acc=0.9950 val_f1_macro=0.9193
+2026-07-08 03:41:44,271 [INFO] src.models.hybrid_model:   [Hybrid Epoch 10/60] loss=0.0043 val_loss=0.0034 val_acc=0.9978 val_f1_macro=0.9600
+2026-07-08 03:43:38,946 [INFO] src.models.hybrid_model:   [Hybrid Epoch 20/60] loss=0.0029 val_loss=0.0025 val_acc=0.9992 val_f1_macro=0.9898
+2026-07-08 03:45:36,734 [INFO] src.models.hybrid_model:   [Hybrid Epoch 30/60] loss=0.0020 val_loss=0.0012 val_acc=0.9998 val_f1_macro=0.9958
+2026-07-08 03:47:31,607 [INFO] src.models.hybrid_model:   [Hybrid Epoch 40/60] loss=0.0010 val_loss=0.0006 val_acc=0.9999 val_f1_macro=0.9976
+2026-07-08 03:49:26,486 [INFO] src.models.hybrid_model:   [Hybrid Epoch 50/60] loss=0.0007 val_loss=0.0008 val_acc=0.9998 val_f1_macro=0.9974
+2026-07-08 03:51:22,226 [INFO] src.models.hybrid_model:   [Hybrid Epoch 60/60] loss=0.0006 val_loss=0.0009 val_acc=0.9998 val_f1_macro=0.9966
+2026-07-08 03:51:22,236 [INFO] src.models.hybrid_model:  Saved best Hybrid model (val_f1=0.9976) to: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/models/hybrid_ctgan.pt
+2026-07-08 03:51:23,218 [INFO] src.evaluation.metrics:  Metrics:
+2026-07-08 03:51:23,218 [INFO] src.evaluation.metrics:    accuracy                                 0.9997
+2026-07-08 03:51:23,218 [INFO] src.evaluation.metrics:    balanced_accuracy                        0.9968
+2026-07-08 03:51:23,219 [INFO] src.evaluation.metrics:    precision                                0.9967
+2026-07-08 03:51:23,219 [INFO] src.evaluation.metrics:    recall                                   0.9968
+2026-07-08 03:51:23,219 [INFO] src.evaluation.metrics:    f1_score                                 0.9967
+2026-07-08 03:51:23,219 [INFO] src.evaluation.metrics:    n_predicted_anomaly                      2006
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    n_true_anomaly                           2003
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    false_positive_rate                      0.0002
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    roc_auc                                  1.0000
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    Benign_precision                         0.9999
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    Benign_recall                            0.9998
+2026-07-08 03:51:23,220 [INFO] src.evaluation.metrics:    Benign_f1                                0.9999
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Botnet_precision                         0.9975
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Botnet_recall                            1.0000
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Botnet_f1                                0.9987
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Malware_precision                        0.9928
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Malware_recall                           0.9905
+2026-07-08 03:51:23,221 [INFO] src.evaluation.metrics:    Malware_f1                               0.9916
+2026-07-08 03:51:23,246 [INFO] src.evaluation.metrics: 
+ Model Comparison Table:
+                               Accuracy Balanced Accuracy Precision  Recall F1 Score Roc Auc
+Model                                                                                       
+Tabular Baseline (MLP)           0.9992            0.9954    0.9814  0.9954   0.9882  0.9999
+Tabular Simple GAN + MLP         0.9992            0.9962    0.9818  0.9962   0.9888  1.0000
+Tabular CTGAN + MLP              0.9991            0.9952    0.9814  0.9952   0.9881  0.9999
+Hybrid Baseline                  0.9998            0.9968    0.9977  0.9968   0.9973  1.0000
+Hybrid Simple GAN + DistilBERT   0.9998            0.9968    0.9977  0.9968   0.9973  1.0000
+Hybrid CTGAN + DistilBERT        0.9997            0.9968    0.9967  0.9968   0.9967  1.0000
+2026-07-08 03:51:23,771 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/metric_comparison.png
+2026-07-08 03:51:24,216 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/metric_comparison.png
+2026-07-08 03:51:24,217 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/threshold_sweep.png
+2026-07-08 03:51:24,217 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/attack_type_breakdown.png
+2026-07-08 03:51:24,222 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/simple_gan/plots/metric_comparison.png
+2026-07-08 03:51:24,224 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/threshold_sweep.png
+2026-07-08 03:51:24,224 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/attack_type_breakdown.png
+2026-07-08 03:51:24,229 [WARNING] src.evaluation.visualizer:  Plot not found: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/ctgan/plots/metric_comparison.png
+2026-07-08 03:51:24,238 [INFO] src.evaluation.visualizer:  GAN vs CTGAN comparison report: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/gan_vs_ctgan_comparison.html
+2026-07-08 03:51:24,245 [INFO] src.evaluation.visualizer:  GAN vs CTGAN JSON saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/comparison/gan_vs_ctgan_metrics.json
+2026-07-08 03:51:24,245 [INFO] MAIN:  Best performing Hybrid model: base (F1=0.9973)
+2026-07-08 03:51:24,563 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/confusion_matrix.png
+2026-07-08 03:51:25,178 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/roc_pr_curves.png
+2026-07-08 03:51:25,442 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/per_class_heatmap.png
+2026-07-08 03:51:25,446 [INFO] MAIN:  Computing attack-type detection breakdown...
+2026-07-08 03:51:25,449 [INFO] src.evaluation.metrics:    [Attack] Botnet                     1584/1584 detected  (100.0%)
+2026-07-08 03:51:25,450 [INFO] src.evaluation.metrics:    [Attack] Malware                    415/419 detected  (99.0%)
+2026-07-08 03:51:25,451 [INFO] src.evaluation.metrics:  Attack Summary: 1999/2003 detected (99.8%) | FP: 5/37997 benign (0.0%)
+2026-07-08 03:51:25,691 [INFO] src.evaluation.visualizer:     Saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/plots/attack_type_breakdown.png
+2026-07-08 03:51:25,691 [INFO] MAIN:  Initializing Local Hybrid DistilBERT Explainer...
+2026-07-08 03:51:25,695 [INFO] src.explainability.hybrid_explainer:  Generating Hybrid DistilBERT-based explanations for 10 samples...
+2026-07-08 03:51:25,713 [INFO] src.evaluation.visualizer:  HTML Report saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/explanation_report.html
+2026-07-08 03:51:25,717 [INFO] src.evaluation.visualizer:  JSON Results saved: /Users/apple/Downloads/ANOMOLY_DETECTION_FOR_IOT/results/reports/results.json
+2026-07-08 03:51:25,717 [INFO] MAIN:  Pipeline complete!
+2026-07-08 03:51:25,717 [INFO] MAIN:  Reports generated in results/reports/
